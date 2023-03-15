@@ -1,4 +1,4 @@
-.. image:: https://github.com/kpeeples/kestrel-as-a-service/blob/1a3e3458f8a27a77db11adb942eea501a9f86f84/images/kaas-logo3.PNG
+.. image:: https://github.com/kpeeples/kestrel-as-a-service/blob/2b4001bf2a1772f33584d0f06e87b62e4c53ba08/images/kestrel-logo-drawio.png
    :width: 432
    :alt: Kestrel as a Service
 
