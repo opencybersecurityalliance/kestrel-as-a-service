@@ -19,7 +19,7 @@ singleuser:
     - display_name: "Kestrel Threat Hunting"
       description: "Threat Hunting in Kube"
       kubespawner_override:
-        image: kpeeples/jupyter-kestrel:latest
+        image: kpeeples/kaas-baseline:latest
     - display_name: "Datascience environment"
       description: "If you want the additional bells and whistles: Python, R, and Julia."
       kubespawner_override:
