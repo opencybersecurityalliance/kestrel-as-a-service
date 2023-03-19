@@ -49,6 +49,8 @@ RUN pip install kestrel-lang
 # Create alternative for nano -> nano-tiny
 RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
 
+RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
+
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID}
 
@@ -66,8 +68,6 @@ RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyt
 RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o ${HOME}/Rprofile.site
 RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R/etc && mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
 #COPY --chown=${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/
-
-RUN mkdir -p /opt/kaas
 
 # Install kestrel-ANALYTICS
 RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
