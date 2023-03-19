@@ -130,3 +130,12 @@ helm upgrade --cleanup-on-fail --debug --install kestrel jupyterhub/jupyterhub -
 minikube dashboard
 
 browse - http://192.168.49.2:31504/hub/login
+
+To reset delete cluster and run above
+
+[kpeeples@kestreltest ~]$ minikube delete
+🔥  Deleting "minikube" in podman ...
+🔥  Deleting container "minikube" ...
+🔥  Removing /home/kpeeples/.minikube/machines/minikube ...
+💀  Removed all traces of the "minikube" cluster.
+

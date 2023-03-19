@@ -66,36 +66,36 @@ RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyt
 COPY --chown=${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/
 
 # Install kestrel-ANALYTICS
-RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git
+RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git ${HOME}/data-bucket-kestrel
 
-RUN mkdir -p analytic-tutorials && \
-    mkdir -p huntbooks && \
-    mkdir -p tutorial && \
-    mkdir -p blackhat22
+RUN mkdir -p ${HOME}/analytic-tutorials && \
+    mkdir -p ${HOME}/huntbooks && \
+    mkdir -p ${HOME}/tutorial && \
+    mkdir -p ${HOME}/blackhat22
 
 # for generic huntbooks like BH22
-RUN cp -r data-bucket-kestrel/stix-bundles anaytic-tutorials
+RUN cp -r data-bucket-kestrel/stix-bundles ${HOME}/anaytic-tutorials
 
 # for the tutorial
-RUN cp data-bucket-kestrel/stix-bundles/lab101.json analytic-tutorials
+RUN cp ${HOME}/data-bucket-kestrel/stix-bundles/lab101.json ${HOME}/analytic-tutorials
 
-RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git
+RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git ${HOME}/kestrel/analytics
 
-RUN cp data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb kestrel-analytics/analytics/piniponmap
+RUN cp ${HOME}/data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb ${HOME}/kestrel-analytics/analytics/piniponmap
 
 RUN rm -rf "${HOME}/data-bucket-kestrel"
 
 # install kestrel-HUNTBOOK
-RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git
+RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git ${HOME}/kestrel-huntbook
 
 RUN mkdir -p ~/.config/kestrel && \
-    mv kestrel-huntbook/config/stixshifter.yaml ~/.config/kestrel/ && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/huntbooks/stixshifter.yaml && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/tutorial/stixshifter.yaml && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/blackhat22/stixshifter.yaml
+    mv ${HOME}/kestrel-huntbook/config/stixshifter.yaml ~/.config/kestrel/ && \
+    ln -s ~/.config/kestrel/stixshifter.yaml ${HOME}/kestrel-huntbook/huntbooks/stixshifter.yaml && \
+    ln -s ~/.config/kestrel/stixshifter.yaml ${HOME}/kestrel-huntbook/tutorial/stixshifter.yaml && \
+    ln -s ~/.config/kestrel/stixshifter.yaml ${HOME}/kestrel-huntbook/blackhat22/stixshifter.yaml
 
-RUN rmdir kestrel-huntbook/config
+RUN rmdir ${HOME}/kestrel-huntbook/config
 
-RUN cp kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
+RUN cp ${HOME}/kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
 
 #RUN jupyter trust */*.ipynb
