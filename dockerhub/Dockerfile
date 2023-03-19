@@ -63,8 +63,9 @@ RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyt
     rm -rf "${HOME}/.local"
 
 # Add R mimetype option to specify how the plot returns from R to the browser
-RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o /opt/conda/lib/R/etc/Rprofile.site
-RUN chown ${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o ${HOME}/Rprofile.site
+RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site 
+RUN mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
 #COPY --chown=${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/
 
 # Install kestrel-ANALYTICS
