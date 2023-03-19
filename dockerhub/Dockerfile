@@ -81,7 +81,7 @@ RUN cp -r data-bucket-kestrel/stix-bundles ${HOME}/anaytic-tutorials
 # for the tutorial
 RUN cp ${HOME}/data-bucket-kestrel/stix-bundles/lab101.json ${HOME}/analytic-tutorials
 
-RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git ${HOME}/kestrel/analytics
+RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git ${HOME}/kestrel-analytics
 
 RUN cp ${HOME}/data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb ${HOME}/kestrel-analytics/analytics/piniponmap
 
