@@ -15,6 +15,7 @@ Note: you can use a credential helper - https://docs.docker.com/engine/reference
 
 - Build image
 $ docker build -t kpeeples/kaas-baseline:latest -t kpeeples/kaas-baseline:v1
+ sudo docker build -t kpeeples/kaas-baseline:latest -t kpeeples/kaas-baseline:v2 https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Dockerfile
 
 -Push image
 sudo docker push kpeeples/kaas-baseline:v1

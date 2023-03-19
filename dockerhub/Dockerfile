@@ -49,6 +49,8 @@ RUN pip install kestrel-lang
 # Create alternative for nano -> nano-tiny
 RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
 
+RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
+
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID}
 
@@ -63,39 +65,41 @@ RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyt
     rm -rf "${HOME}/.local"
 
 # Add R mimetype option to specify how the plot returns from R to the browser
-COPY --chown=${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/
+RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o ${HOME}/Rprofile.site
+RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R/etc && mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+#COPY --chown=${NB_UID}:${NB_GID} Rprofile.site /opt/conda/lib/R/etc/
 
 # Install kestrel-ANALYTICS
-RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git
+RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
 
-RUN mkdir -p analytic-tutorials && \
-    mkdir -p huntbooks && \
-    mkdir -p tutorial && \
-    mkdir -p blackhat22
+RUN mkdir -p /opt/kaas/analytic-tutorials && \
+    mkdir -p /opt/kaas/huntbooks && \
+    mkdir -p /opt/kaas/tutorial && \
+    mkdir -p /opt/kaas/blackhat22
 
 # for generic huntbooks like BH22
-RUN cp -r data-bucket-kestrel/stix-bundles anaytic-tutorials
+RUN cp -r /opt/kaas/data-bucket-kestrel/stix-bundles /opt/kaas/anaytic-tutorials
 
 # for the tutorial
-RUN cp data-bucket-kestrel/stix-bundles/lab101.json analytic-tutorials
+RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /opt/kaas/analytic-tutorials
 
-RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git
+RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git /opt/kaas/kestrel-analytics
 
-RUN cp data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb kestrel-analytics/analytics/piniponmap
+RUN cp /opt/kaas/data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb /opt/kaas/kestrel-analytics/analytics/piniponmap
 
-RUN rm -rf "${HOME}/data-bucket-kestrel"
+RUN rm -rf "/opt/kaas/data-bucket-kestrel"
 
 # install kestrel-HUNTBOOK
-RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git
+RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git /opt/kaas/kestrel-huntbook
 
-RUN mkdir -p ~/.config/kestrel && \
-    mv kestrel-huntbook/config/stixshifter.yaml ~/.config/kestrel/ && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/huntbooks/stixshifter.yaml && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/tutorial/stixshifter.yaml && \
-    ln -s ~/.config/kestrel/stixshifter.yaml kestrel-huntbook/blackhat22/stixshifter.yaml
+RUN mkdir -p /home/jovyan/.config/kestrel && \
+    mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml /home/jovyan/.config/kestrel/ && \
+    ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/huntbooks/stixshifter.yaml && \
+    ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/tutorial/stixshifter.yaml && \
+    ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/blackhat22/stixshifter.yaml
 
-RUN rmdir kestrel-huntbook/config
+RUN rmdir /opt/kaas/kestrel-huntbook/config
 
-RUN cp kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
+RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml /home/jovyan/.config/kestrel/pythonanalytics.yaml
 
 #RUN jupyter trust */*.ipynb
