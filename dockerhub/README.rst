@@ -18,3 +18,6 @@ $ docker build -t kpeeples/kaas-baseline:latest -t kpeeples/kaas-baseline:v1
 
 -Push image
 sudo docker push kpeeples/kaas-baseline:v1
+sudo docker push kpeeples/kaas-baseline:latest
+https://hub.docker.com/repository/docker/kpeeples/kaas-baseline/general
+
