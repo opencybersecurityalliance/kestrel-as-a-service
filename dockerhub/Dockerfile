@@ -78,7 +78,7 @@ RUN mkdir -p /opt/kaas/analytic-tutorials && \
     mkdir -p /opt/kaas/blackhat22
 
 # for generic huntbooks like BH22
-RUN cp -r /opt/kaas/data-bucket-kestrel/stix-bundles /opt/kaas/anaytic-tutorials
+RUN cp -r /opt/kaas/data-bucket-kestrel/stix-bundles /opt/kaas/analytic-tutorials
 
 # for the tutorial
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /opt/kaas/analytic-tutorials
