@@ -30,3 +30,12 @@ Login with kaas-user
 
 Secure jupyterhub
 
+used master and https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/keycloak/keycloak.yaml
+
+https://keycloak.discourse.group/t/issue-on-userinfo-endpoint-at-keycloak-20/18461/4
+
+https://github.com/bitnami/charts/tree/main/bitnami/keycloak
+
+ helm install my-release --set ingress.enabled=true --set auth.adminUser=admin --set auth.adminPassword=redhat my-repo/keycloak
+
+helm install my-release --set ingress.enabled=true my-repo/keycloak

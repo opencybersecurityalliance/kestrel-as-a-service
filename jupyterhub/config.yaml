@@ -40,3 +40,20 @@ singleuser:
                 - "-c"
                 - >
                   gitpuller https://github.com/data-8/materials-fa17 master materials-fa;
+hub:
+  config:
+    GenericOAuthenticator:
+      client_id: kaas
+      client_secret: <retracted>
+      oauth_callback_url: http://192.168.49.2:31205/hub/oauth_callback
+      authorize_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/auth
+      token_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/token
+      userdata_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/userinfo
+      login_service: keycloak
+      username_key: preferred_username
+      enable_auth_state: true
+      auto_login: true
+      userdata_params:
+        state: state
+    JupyterHub:
+      authenticator_class: generic-oauth
