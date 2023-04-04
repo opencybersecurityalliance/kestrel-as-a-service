@@ -1,1 +1,6 @@
-site.yaml
+---
+- hosts: localhost
+  roles:
+    - minikube
+    - keycloak
+    - kaas
