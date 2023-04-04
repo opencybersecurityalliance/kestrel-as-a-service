@@ -10,3 +10,10 @@ Test
 To successfully connect to virtual machines you will need insecure_private_key. You can create it by invoking
 command:$ vagrant init inside vagrant directory. It will create insecure_private_key inside your physical machine
 in HOME_DIRECTORY/.vagrant.d. Copy it to ansible folder.
+
+Fedora resources:
+cpus 4
+memory 8196gb
+disk 40gb
+video memory 32mb
+
