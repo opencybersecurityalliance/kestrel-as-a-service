@@ -1,6 +1,7 @@
 ---
-- hosts: localhost
+- name: Install full KaaS Stack
+  hosts: kaas
   roles:
     - minikube
-    - keycloak
+    - helm
     - kaas

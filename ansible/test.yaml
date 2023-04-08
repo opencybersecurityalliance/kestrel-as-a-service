@@ -1,5 +1,5 @@
 ---
-- name: Install KaaS
+- name: Test facts
   hosts: kaas
   gather_facts: yes
   become: false

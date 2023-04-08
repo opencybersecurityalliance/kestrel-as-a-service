@@ -1,1 +1,6 @@
-main.yml
+---
+- name: Deploy Jupyterhub from url
+  kubernetes.core.helm:
+    name: kaas
+    chart_ref: "https://jupyterhub.github.io/helm-chart/"
+    create_namespace: true

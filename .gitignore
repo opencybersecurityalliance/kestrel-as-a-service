@@ -9,3 +9,4 @@ vault.init
 *.vagrant
 super-linter.log
 /archive
+*.log

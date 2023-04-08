@@ -1,0 +1,15 @@
+---
+# Helm version number
+helm_version: '3.11.2'
+
+# The CPU architecture of the Helm executable to install
+helm_architecture: 'amd64'
+
+# Mirror to download Helm from
+helm_mirror: 'https://get.helm.sh'
+
+# Dir where Helm should be installed
+helm_install_dir: '/usr/local/share/helm'
+
+# Directory to store files downloaded for Helm
+helm_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
