@@ -1,0 +1,33 @@
+---
+- name: Get latest kubectl version
+  uri:
+    url: https://dl.k8s.io/release/stable.txt
+    return_content: yes
+  register: version
+
+- name: Download the latest kubectl release
+  uri:
+    url: https://dl.k8s.io/release/{{ version.content }}/bin/linux/amd64/kubectl
+    dest: /home/{{ ansible_user }}
+  register: kubectl
+
+- name: Download the kubectl checksum file
+  uri:
+    url: https://dl.k8s.io/release/{{ version.content }}/bin/linux/amd64/kubectl.sha256
+    dest: /home/{{ ansible_user }}
+
+- name: Move File
+  command: mv /home/{{ ansible_user }}/kubectl /usr/local/bin/kubectl
+
+- name: Change file ownership, group and permissions
+  become: yes
+  ansible.builtin.file:
+    path: /usr/local/bin/kubectl
+    owner: root
+    group: root
+    mode: '+x'
+
+- name: Check if kubectl is installed
+  shell: kubectl version --client
+  register: client
+  failed_when: client.rc > 1

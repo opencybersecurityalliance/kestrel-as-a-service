@@ -1,7 +1,9 @@
 ---
 - name: Install full KaaS Stack
-  hosts: kaas
+  hosts: all
   roles:
+    - docker
+    - kubectl
     - minikube
     - helm
     - kaas

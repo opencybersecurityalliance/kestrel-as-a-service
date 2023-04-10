@@ -66,6 +66,7 @@
       - tar
       - unzip
       - gzip
+      - podman
     state: present
   when: ansible_pkg_mgr in ('apt', 'yum', 'dnf', 'zypper')
 

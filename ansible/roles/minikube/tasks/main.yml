@@ -52,6 +52,6 @@
 - name: Start minikube
   register: minikube_info
   shell: |
-    minikube start --cpus=4 --memory=6gb --vm-driver virtualbox --install-addons=true --addons dashboard --addons metrics-server
+    minikube start --cpus=4 --memory=6gb --install-addons=true --addons dashboard --addons metrics-server
     minikube status
     kubectl cluster-info
