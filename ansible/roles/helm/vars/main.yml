@@ -1,0 +1,6 @@
+---
+# The OS of the Helm redistributable
+helm_os: 'linux'
+
+# File name of the Helm redistributable file
+helm_redis_filename: 'helm-v{{ helm_version }}-{{ helm_os }}-{{ helm_architecture }}.tar.gz'

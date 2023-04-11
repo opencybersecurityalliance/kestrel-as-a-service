@@ -1,0 +1,3 @@
+---
+# ansible user
+ansible_user: 'vagrant'

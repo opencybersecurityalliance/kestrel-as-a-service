@@ -1,10 +1,6 @@
-[masters]
-k8s-master ansible_host=192.168.50.10 ansible_user=vagrant
-
-[nodes]
-k8s-node-1 ansible_host=192.168.50.11 ansible_user=vagrant
+kaas
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_user=vagrant
-ansible_ssh_private_key_file=/ansible/insecure_private_key
+

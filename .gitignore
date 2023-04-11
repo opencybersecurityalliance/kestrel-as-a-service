@@ -6,5 +6,7 @@ values-secret*
 pattern-vault.init
 vault.init
 *.vscode
+*.vagrant
 super-linter.log
 /archive
+*.log
