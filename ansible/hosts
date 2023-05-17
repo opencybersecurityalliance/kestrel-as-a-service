@@ -1,6 +1,15 @@
-kaas
+[controller]
+192.168.50.8 ansible_user=vagrant
 
-[all:vars]
-ansible_python_interpreter=/usr/bin/python3
-ansible_ssh_user=vagrant
+[minikube]
+192.168.50.9 ansible_user=vagrant
 
+[masters]
+192.168.50.10 ansible_user=vagrant
+
+[nodes]
+192.168.50.13 ansible_user=vagrant
+
+[kubernetes:children]
+masters
+nodes

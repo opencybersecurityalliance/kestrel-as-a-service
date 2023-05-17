@@ -1,0 +1,40 @@
+---
+- copy:
+    src: kubernetes-dashboard.yaml
+    dest: '/home/vagrant/kubernetes-dashboard.yaml'
+
+- name: Create a Deployment by reading the definition from a local file
+  become: false
+  kubernetes.core.k8s:
+    state: present
+    src: /home/vagrant/kubernetes-dashboard.yaml
+
+- copy:
+    src: kubernetes-dashboard.ServiceAccount.yaml
+    dest: '/home/vagrant/kubernetes-dashboard.ServiceAccount.yaml'
+
+- name: apply service account
+  become: false
+  kubernetes.core.k8s:
+    state: present
+    src: /home/vagrant/kubernetes-dashboard.ServiceAccount.yaml
+
+- copy:
+    src: kubernetes-dashboard.ClusterRoleBinding.yaml
+    dest: '/home/vagrant/kubernetes-dashboard.ClusterRoleBinding.yaml'
+
+- name: apply role binding
+  become: false
+  kubernetes.core.k8s:
+    state: present
+    src: /home/vagrant/kubernetes-dashboard.ClusterRoleBinding.yaml
+
+- copy:
+    src: metrics-server.yaml
+    dest: '/home/vagrant/metrics-server.yaml'
+
+- name: Apply metrics-server manifest to the cluster.
+  become: false
+  kubernetes.core.k8s:
+    state: present
+    src: /home/vagrant/metrics-server.yaml

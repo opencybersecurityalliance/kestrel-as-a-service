@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hub-db-dir
+  namespace: kaas
+  labels:
+    component: jupyter
+spec:
+  storageClassName: "local-storage" # name of storage class, it will be default storage class if unspecified.
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "200Mi"
