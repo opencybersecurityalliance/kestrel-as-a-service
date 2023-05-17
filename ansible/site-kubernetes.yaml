@@ -1,0 +1,19 @@
+---
+- name: Install Masters
+  hosts: masters
+  become: true
+  roles:
+    - kubernetes-masters
+
+- name: Install Nodes
+  hosts: nodes
+  become: true
+  roles:
+    - kubernetes-nodes
+
+- name: Deployments including kaas
+  hosts: masters
+  roles:
+    - helm
+    - addons
+    - kaas

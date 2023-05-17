@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_version = "37.20221105.0"
     config.vm.hostname = "kaas-fedora"
     #config.vm.network :public_network
-    config.vm.network "public_network", bridge: 'en0: Wi-Fi', :adapter=>2 , type: "dhcp"
+    config.vm.network "public_network", bridge: 'en0: Wi-Fi', :adapter=>2 , type: "dhcp", mac: "0800272F269F"
     config.vm.define "kaas-fedora"
     config.ssh.insert_key = false
     config.vm.provider "virtualbox" do |vb|
@@ -13,7 +13,14 @@ Vagrant.configure("2") do |config|
         vb.cpus = 4 
         vb.name = "kaas-fedora"
     end
-    config.vm.synced_folder "../../ansible", "/ansible", :mount_options => ["dmode=700", "fmode=700"]
+    #config.vm.synced_folder "../../ansible", "/ansible", :mount_options => ["dmode=700", "fmode=700"]
+    config.vm.provision "file", 
+      source: "../../ansible", 
+      destination: "/tmp/ansible"
+    config.vm.provision "shell",
+      inline: "mkdir /ansible"
+    config.vm.provision "shell",
+      inline: "cp -R /tmp/ansible/* /ansible"
     config.vm.provision "ansible_local" do |ansible|
         ansible.limit = "all"
         ansible.config_file = "/ansible/ansible.cfg"
