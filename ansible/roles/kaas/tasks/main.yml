@@ -1,27 +1,11 @@
 ---
-# Create a ext4 filesystem on /dev/sdb and check disk blocks.
-#- filesystem:
-#    fstype: ext4
-#    dev: /dev/sdb
-#    opts: -cc
-
-#- name: Create a directory if it does not exist
-#  ansible.builtin.file:
-#    cd rolespath: /mnt/local-storage
-#    state: directory
-#    mode: '0755'
-
-#- name: Mount and bind volume
-#  mount:
-#  path: /mnt/local-storage
-#  src: /dev/sdb
-#  state: mounted
-
-- copy:
+- name: Copy jupyterhub config file
+  copy:
     src: jupyterhub-config.yaml
     dest: '/home/vagrant/jupyterhub-config.yaml'
 
-- copy:
+- name: Copy storage config file
+  copy:
     src: kaas-storage.yaml
     dest: '/home/vagrant/kaas-storage.yaml'
 
@@ -31,7 +15,8 @@
     state: present
     src: /home/vagrant/kaas-storage.yaml
 
-- copy:
+- name: Copy PV config file
+  copy:
     src: kaas-pv.yaml
     dest: '/home/vagrant/kaas-pv.yaml'
 
@@ -41,19 +26,14 @@
     state: present
     src: /home/vagrant/kaas-pv.yaml
 
-- copy:
+- name: Copy pvc config file
+  copy:
     src: kaas-pvc.yaml
     dest: '/home/vagrant/kaas-pvc.yaml'
 
-- name: Apply pvc manifest to the cluster.
-  become: false
-  kubernetes.core.k8s:
-    state: present
-    src: /home/vagrant/kaas-pvc.yaml
-
 - name: Deploy Jupyterhub from url with 45 min wait
   kubernetes.core.helm:
-    timeout: 45m0s
+    timeout: 15m0s
     wait: true
     name: kaas
     chart_ref: "https://jupyterhub.github.io/helm-chart/jupyterhub-2.0.0.tgz"

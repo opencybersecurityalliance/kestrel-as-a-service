@@ -40,9 +40,13 @@ Vagrant.configure("2") do |config|
                 vb.name = "kaas-node-#{i}"
                 vb.memory = 12288
                 vb.cpus = 4
+                disk = "local_storage_node#{i}.vdi"
+                unless File.exist?(disk)
+                    vb.customize ['createhd', '--filename', disk, '--size', 60 * 1024]
+                end
+                    vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
             end
             node.vm.provision "shell", path: "bootstrap.sh"
-            node.vm.disk :disk, size: "40GB", name: "kaas-storage"
         end
     end
 

@@ -1,4 +1,30 @@
 ---
+- name: Create a new ext4 primary partition
+  parted:
+    device: /dev/sdb
+    number: 1
+    state: present
+
+- name: Format the partition
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+
+- name: Create mount directory
+  file:
+    dest: /mnt/local-storage/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Mount drive
+  mount:
+    path: /mnt/local-storage/
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted
+
 - name: Install necessary packages
   apt:
     name: "{{ packages }}"

@@ -10,3 +10,4 @@ vault.init
 super-linter.log
 /archive
 *.log
+*.vdi
