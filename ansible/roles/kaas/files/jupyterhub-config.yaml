@@ -8,7 +8,11 @@
 # Chart default values:     https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/HEAD/jupyterhub/values.yaml
 # Available chart versions: https://jupyterhub.github.io/helm-chart/
 singleuser:
-  # Defines the default image
+  storage:
+    type: "static"
+    static:
+      pvcName: "nfs-share-pvc"
+      subPath: 'home/{username}'
   image:
     name: jupyter/minimal-notebook
     tag: latest
@@ -20,40 +24,9 @@ singleuser:
       description: "Threat Hunting in Kube"
       kubespawner_override:
         image: kpeeples/kaas-baseline:latest
-    - display_name: "Datascience environment"
-      description: "If you want the additional bells and whistles: Python, R, and Julia."
-      kubespawner_override:
-        image: jupyter/datascience-notebook:latest
-    - display_name: "Spark environment"
-      description: "The Jupyter Stacks spark image!"
-      kubespawner_override:
-              image: jupyter/all-spark-notebook:latest
-    - display_name: "Learning Data Science"
-      description: "Datascience Environment with Sample Notebooks"
-      kubespawner_override:
-        image: jupyter/datascience-notebook:latest
-        lifecycle_hooks:
-          postStart:
-            exec:
-              command:
-                - "sh"
-                - "-c"
-                - >
-                  gitpuller https://github.com/data-8/materials-fa17 master materials-fa;
-hub:
-  config:
-    GenericOAuthenticator:
-      client_id: kaas
-      client_secret: <retracted>
-      oauth_callback_url: http://192.168.49.2:31205/hub/oauth_callback
-      authorize_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/auth
-      token_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/token
-      userdata_url: http://192.168.49.2:30243/realms/master/protocol/openid-connect/userinfo
-      login_service: keycloak
-      username_key: preferred_username
-      enable_auth_state: true
-      auto_login: true
-      userdata_params:
-        state: state
-    JupyterHub:
-      authenticator_class: generic-oauth
+proxy:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30080
+      https: 30443

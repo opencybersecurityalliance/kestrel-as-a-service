@@ -1,4 +1,10 @@
 ---
+- name: Install NFS
+  hosts: nfs
+  become: true
+  roles:
+    - nfs
+
 - name: Install Masters
   hosts: masters
   become: true

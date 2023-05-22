@@ -1,6 +1,9 @@
 [controller]
 192.168.50.8 ansible_user=vagrant
 
+[nfs]
+192.168.50.7 ansible_user=vagrant
+
 [minikube]
 192.168.50.9 ansible_user=vagrant
 
@@ -13,3 +16,4 @@
 [kubernetes:children]
 masters
 nodes
+nfs
