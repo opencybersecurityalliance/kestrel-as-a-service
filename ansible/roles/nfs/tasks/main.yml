@@ -1,0 +1,22 @@
+---
+- name: Create kube directory
+  file:
+    path: /var/nfs/usersdata
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0666'
+
+- name: Install necessary packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - nfs-kernel-server
+
+- name: Copy exports file
+  copy:
+    src: exports
+    dest: '/etc/exports'

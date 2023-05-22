@@ -5,13 +5,25 @@ M = 1
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
 
+    config.vm.define "nfs" do |nfs|
+        nfs.vm.box = IMAGE_NAME
+        nfs.vm.hostname = "kaas-nfs"
+        nfs.vm.network "private_network", ip: "192.168.50.7"
+        nfs.vm.provider :virtualbox do |vb|
+            vb.name = "kaas-nfs"
+            vb.memory = 2048
+            vb.cpus = 2
+        end
+        nfs.vm.provision "shell", path: "bootstrap.sh"
+    end
+
     config.vm.define "minikube" do |minikube|
         minikube.vm.box = IMAGE_NAME
         minikube.vm.hostname = "kaas-minikube"
         minikube.vm.network "private_network", ip: "192.168.50.9"
         minikube.vm.provider :virtualbox do |vb|
             vb.name = "minikube"
-            vb.memory = 4196
+            vb.memory = 2048
             vb.cpus = 2
         end
         minikube.vm.provision "shell", path: "bootstrap.sh"
@@ -42,7 +54,7 @@ Vagrant.configure("2") do |config|
                 vb.cpus = 4
                 disk = "local_storage_node#{i}.vdi"
                 unless File.exist?(disk)
-                    vb.customize ['createhd', '--filename', disk, '--size', 60 * 1024]
+                    vb.customize ['createhd', '--filename', disk, '--size', 20 * 1024]
                 end
                     vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
             end

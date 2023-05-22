@@ -6,6 +6,4 @@ metadata:
     storageclass.kubernetes.io/is-default-class: 'true'
 provisioner: kubernetes.io/no-provisioner
 allowVolumeExpansion: true
-mountOptions:
-  - debug
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer

@@ -1,31 +1,31 @@
-**Steps to Build Environment** 
+**Building the KaaS Environment** 
+
+Currently the testing for milestone 1 is using the nfs, controller, node-1 and master-1 virtual machines with a base Ubuntu, with the addition of Keycloakansible module. Minikube (1 VM) and Fedora are in progress.
+
+Steps to build and test the environment using the Ansible roles defined in the site-kubernetes.yaml.
 
 - Install Virtual Box 
 - Install Vagrant 
 - Install Ansible 
 - Clone Kestrel As a Service - https://github.com/opencybersecurityalliance/kestrel-as-a-service 
-- Determine the OS (ie Ubuntu, Fedora) and Cluster (ie crc, minikube, kubernetes) 
 - Run vagrant up 
--- Setup the extra drive for sc/pv/pvc
--- vagrant ssh node-1
--- vagrant@kaas-node-1:~$ sudo fdisk /dev/sdb, select n and defaults, then w to write
--- sudo mkfs.ext4 /dev/sdb
--- sudo mkdir /mnt/local-storage && sudo mount /dev/sdb /mnt/local-storage
--- ll /mnt/local-storage
-- Run vagrant provision or ansible playbook 
--- vagrant ssh controller
---  cd /ansible
--- ansible-playbook -i hosts site-kubernetes.yaml 
-- Access the Kubernetes Dashboard, using the kubeadmin 
--- kubectl get svc -n kubernetes-dashboard
--- SECRET_NAME=$(kubectl -n kubernetes-dashboard get serviceaccount admin-user -o jsonpath='{$.secrets[0].name}')
--- TOKEN=$(kubectl -n kubernetes-dashboard get secret ${SECRET_NAME} -o jsonpath='{$.data.token}' | base64 -d | sed $'s/$/\\\n/g')
--- echo $TOKEN
--- browse to port with master-ip:port, ie https://192.168.50.10:30672/#/login
+- Run ansible playbook 
+-- [local] vagrant ssh controller
+-- [controller] cd /ansible
+-- [controller] ansible-playbook -i hosts site-kubernetes.yaml 
+- Access the Kubernetes Dashboard
+-- [master-1]kubectl get svc -n kubernetes-dashboard --> kubernetes-dashboard        NodePort    10.102.110.81   <none>        443:31888/TCP   9h
+-- [master-1]SECRET_NAME=$(kubectl -n kubernetes-dashboard get serviceaccount admin-user -o jsonpath='{$.secrets[0].name}')
+-- [master-1]TOKEN=$(kubectl -n kubernetes-dashboard get secret ${SECRET_NAME} -o jsonpath='{$.data.token}' | base64 -d | sed $'s/$/\\\n/g')
+-- [master-1]echo $TOKEN
+-- [local]browse to port with master-ip:port, ie https://192.168.50.10:31888/#/login
 -- Copy the content from $TOKEN into the toekn field
-- Access the KaaS Dashboard, using a SSO User 
+- Access the KaaS Dashboard
+-- [master-1] kubectl get svc -n kaas --> proxy-public   NodePort    10.107.60.121    <none>        80:30080/TCP   9h
+-- [local] browse to http://192.168.50.10:30080
 
 NOTE: 
-/vagrant directory on servers will point to local local workspace
-second drive for local-storage default is located at local workspace
-kubernetes dashboard and jupyterhub dashboard are exposed outside the Cluster
+- /vagrant directory on servers will point to local local workspace
+- second drive for local-storage default is located at node-1 for Jupyterhub DB with NFS for user storage space
+- kubernetes dashboard and jupyterhub dashboard are exposed outside the Cluster
+

@@ -4,7 +4,7 @@ metadata:
   name: hub-db-pv
 spec:
   capacity:
-    storage: 200Mi
+    storage: 10Gi
   accessModes:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain

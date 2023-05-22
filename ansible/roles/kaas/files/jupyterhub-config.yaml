@@ -8,13 +8,14 @@
 # Chart default values:     https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/HEAD/jupyterhub/values.yaml
 # Available chart versions: https://jupyterhub.github.io/helm-chart/
 singleuser:
-  # Defines the default image
+  storage:
+    type: "static"
+    static:
+      pvcName: "nfs-share-pvc"
+      subPath: 'home/{username}'
   image:
     name: jupyter/minimal-notebook
     tag: latest
-  storage:
-    dynamic:
-      storageClass: local-storage
   profileList:
     - display_name: "Minimal environment"
       description: "To avoid too much bells and whistles: Python."
