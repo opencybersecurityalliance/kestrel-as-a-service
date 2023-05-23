@@ -1,13 +1,13 @@
 ---
-- name: Create kube directory
+- name: Create NFS directory
   file:
     path: /var/nfs/usersdata
     state: directory
     owner: nobody
     group: nogroup
-    mode: '0666'
+    mode: 666
 
-- name: Install necessary packages
+- name: Install NFS necessary packages
   apt:
     name: "{{ packages }}"
     state: present
@@ -15,8 +15,13 @@
   vars:
     packages:
     - nfs-kernel-server
+    - nfs-common
 
-- name: Copy exports file
+- name: Copy NFS exports file
   copy:
     src: exports
     dest: '/etc/exports'
+    owner: root
+    group: root
+    mode: 644
+  notify: reload nfs
