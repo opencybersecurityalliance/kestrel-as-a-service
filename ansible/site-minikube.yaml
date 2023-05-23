@@ -1,7 +1,7 @@
 CURRENTLY IN PROGRESS
 ---
 - name: Install full KaaS Stack
-  hosts: all
+  hosts: minikube
   roles:
     - docker
     - kubectl
