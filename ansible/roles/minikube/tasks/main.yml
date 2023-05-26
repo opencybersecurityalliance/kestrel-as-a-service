@@ -49,11 +49,11 @@
     group: root
     mode: 'u=rwx,go=rx'
 
-- name: Setup group
-  become: yes
-  shell: |
-    usermod -aG docker vagrant
-    newgrp docker
+#- name: Setup group
+#  become: yes
+#  shell: |
+#    usermod -aG docker vagrant
+#    newgrp docker
 
 - name: Changing permissions
   file: dest=/var/run/docker.sock mode=666
@@ -67,3 +67,4 @@
     kubectl cluster-info
 
 #https://stackoverflow.com/questions/65397050/minikube-does-not-start-on-ubuntu-20-04-lts-exiting-due-to-guest-provision
+#https://kienmn97.medium.com/manually-deploy-jupyterhub-on-kubernetes-for-a-single-machine-dbcd9c9e50a4

@@ -1,10 +1,15 @@
-CURRENTLY IN PROGRESS
 ---
-- name: Install full KaaS Stack
+- name: Install minikube
   hosts: minikube
+  become: true
   roles:
     - docker
     - kubectl
     - minikube
+
+- name: Install kaas
+  hosts: minikube
+  become: true
+  roles:
     - helm
     - kaas

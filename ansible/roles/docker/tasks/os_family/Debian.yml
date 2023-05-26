@@ -45,12 +45,16 @@
     state: present
 
 - name: install pip
-  shell: curl -sSL https://bootstrap.pypa.io/get-pip.py | python
+  apt:
+    name: python3-pip
+    update_cache: yes
+    state: present
 
-- name: install docker-py and docker-compose
+- name: install docker-py, kubernetes and docker-compose
   pip:
     name: [
       docker-py,
       docker-compose,
+      kubernetes,
     ]
     state: present

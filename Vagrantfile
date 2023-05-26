@@ -23,8 +23,8 @@ Vagrant.configure("2") do |config|
         minikube.vm.network "private_network", ip: "192.168.50.9"
         minikube.vm.provider :virtualbox do |vb|
             vb.name = "minikube"
-            vb.memory = 2048
-            vb.cpus = 2
+            vb.memory = 4096
+            vb.cpus = 6
         end
         minikube.vm.provision "shell", path: "bootstrap.sh"
     end
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
         controller.vm.network "private_network", ip: "192.168.50.8"
         controller.vm.provider :virtualbox do |vb|
             vb.name = "ansible-controller"
-            vb.memory = 4196
+            vb.memory = 4096
             vb.cpus = 2
         end
         controller.vm.provision "shell", path: "bootstrap.sh"
