@@ -1,5 +1,8 @@
 **Building the KaaS Environment** 
 
+
+Building the Kuhbernetes multi-node enterprise environment
+
 Currently the testing for milestone 1 is using the nfs, controller, node-1 and master-1 virtual machines with a base Ubuntu, with the addition of Keycloakansible module. Minikube (1 VM) and Fedora are in progress.
 
 Steps to build and test the environment using the Ansible roles defined in the site-kubernetes.yaml.
@@ -39,4 +42,6 @@ Unit Test:
 8. Kestrel Tutorial start to finish
 9. Load Test (development/minimum 30 user requirement test and production 100 test) - check requirements for master and node
 10. CI/CD pipeline on minikube
+
+Build the single node development environment
 
