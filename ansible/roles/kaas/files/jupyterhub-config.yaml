@@ -9,6 +9,11 @@
 # Available chart versions: https://jupyterhub.github.io/helm-chart/
 singleuser:
   startTimeout: 3600
+  extraEnv:
+    GRANT_SUDO: "yes"
+    NOTEBOOK_ARGS: "--allow-root"
+  uid: 0
+  cmd: start-singleuser.sh
   storage:
     type: "static"
     static:

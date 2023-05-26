@@ -13,7 +13,7 @@ Steps to build and test the environment using the Ansible roles defined in the s
 -- [controller] cd /ansible
 -- [controller] ansible-playbook -i hosts site-kubernetes.yaml 
 - Access the Kubernetes Dashboard
--- [master-1]kubectl get svc -n kubernetes-dashboard --> kubernetes-dashboard        NodePort    10.102.110.81   <none>        443:31888/TCP   9h
+-- [master-1] --> kubernetes-dashboard        NodePort    10.102.110.81   <none>        443:31888/TCP   9h
 -- [master-1]SECRET_NAME=$(kubectl -n kubernetes-dashboard get serviceaccount admin-user -o jsonpath='{$.secrets[0].name}')
 -- [master-1]TOKEN=$(kubectl -n kubernetes-dashboard get secret ${SECRET_NAME} -o jsonpath='{$.data.token}' | base64 -d | sed $'s/$/\\\n/g')
 -- [master-1]echo $TOKEN
