@@ -70,7 +70,7 @@ minikube mount $HOME:/host
 
 
 
-
+NOTE: change IP to variable instead of static for iptables
 
 
 sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
