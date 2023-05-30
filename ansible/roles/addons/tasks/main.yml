@@ -2,43 +2,43 @@
 - name: copy dashboard config
   copy:
     src: kubernetes-dashboard.yaml
-    dest: '/home/vagrant/kubernetes-dashboard.yaml'
+    dest: '/home/{{ ansible_user }}/kubernetes-dashboard.yaml'
 
 - name: Create a Deployment by reading the definition from a local file
   become: false
   kubernetes.core.k8s:
     state: present
-    src: /home/vagrant/kubernetes-dashboard.yaml
+    src: /home/{{ ansible_user }}/kubernetes-dashboard.yaml
 
 - name: copy dashboard service account file
   copy:
     src: kubernetes-dashboard.ServiceAccount.yaml
-    dest: '/home/vagrant/kubernetes-dashboard.ServiceAccount.yaml'
+    dest: '/home/{{ ansible_user }}/kubernetes-dashboard.ServiceAccount.yaml'
 
 - name: apply service account
   become: false
   kubernetes.core.k8s:
     state: present
-    src: /home/vagrant/kubernetes-dashboard.ServiceAccount.yaml
+    src: /home/{{ ansible_user }}/kubernetes-dashboard.ServiceAccount.yaml
 
 - name: copy dashboard role binding
   copy:
     src: kubernetes-dashboard.ClusterRoleBinding.yaml
-    dest: '/home/vagrant/kubernetes-dashboard.ClusterRoleBinding.yaml'
+    dest: '/home/{{ ansible_user }}/kubernetes-dashboard.ClusterRoleBinding.yaml'
 
 - name: apply role binding
   become: false
   kubernetes.core.k8s:
     state: present
-    src: /home/vagrant/kubernetes-dashboard.ClusterRoleBinding.yaml
+    src: /home/{{ ansible_user }}/kubernetes-dashboard.ClusterRoleBinding.yaml
 
 - name: copy mtrecis-server config
   copy:
     src: metrics-server.yaml
-    dest: '/home/vagrant/metrics-server.yaml'
+    dest: '/home/{{ ansible_user }}/metrics-server.yaml'
 
 - name: Apply metrics-server manifest to the cluster.
   become: false
   kubernetes.core.k8s:
     state: present
-    src: /home/vagrant/metrics-server.yaml
+    src: /home/{{ ansible_user }}/metrics-server.yaml
