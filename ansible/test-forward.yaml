@@ -1,0 +1,14 @@
+---
+- name: test forward
+  hosts: minikube
+  tasks:
+  - name: Forward ports from outside vm to minikube  
+    become: yes
+    ansible.builtin.iptables:
+      table: nat
+      chain: PREROUTING
+      protocol: tcp
+      destination: 192.168.50.9
+      destination_ports: '30000:32767'
+      jump: DNAT
+      to_destination: '192.168.49.2:30000-32767'

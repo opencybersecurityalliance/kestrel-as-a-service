@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+spec:
+  ports:
+    - protocol: TCP
+      port: 81
+      targetPort: 9090
+      nodePort: 30081
+  type: NodePort

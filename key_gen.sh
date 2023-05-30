@@ -6,7 +6,8 @@ ssh-keygen -b 2048 -t rsa -f /home/vagrant/.ssh/id_rsa -q -N ""
 
 # LOOPING THROUGH AND DISTRIBUTING THE KEY
 
-for val in kaas-ansible-controller minikube kaas-master-1 kaas-node-1 kaas-nfs; do
+#for val in kaas-ansible-controller minikube kaas-master-1 kaas-node-1 kaas-nfs; do
+for val in kaas-ansible-controller minikube; do
         echo "-------------------- COPYING KEY TO ${val^^} NODE ------------------------------"
         sshpass -p 'vagrant' ssh-copy-id -o "StrictHostKeyChecking=no" vagrant@$val
 done

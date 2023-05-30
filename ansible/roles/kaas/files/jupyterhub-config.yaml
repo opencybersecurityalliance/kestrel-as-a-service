@@ -14,11 +14,6 @@ singleuser:
     NOTEBOOK_ARGS: "--allow-root"
   uid: 0
   cmd: start-singleuser.sh
-  storage:
-    type: "static"
-    static:
-      pvcName: "nfs-share-pvc"
-      subPath: 'home/{username}'
   image:
     name: jupyter/minimal-notebook
     tag: latest

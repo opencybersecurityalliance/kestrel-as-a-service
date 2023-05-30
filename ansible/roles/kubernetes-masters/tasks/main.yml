@@ -96,32 +96,32 @@
 
 - name: Create kube directory
   file:
-    path: /home/vagrant/.kube
+    path: /home/{{ ansible_user }}/.kube
     state: directory
 
-- name: Setup kubeconfig for vagrant user
+- name: Setup kubeconfig for user
   copy:
     src: /etc/kubernetes/admin.conf
-    dest: /home/vagrant/.kube/config
+    dest: /home/{{ ansible_user }}/.kube/config
     remote_src: yes
-    owner: vagrant
-    group: vagrant
+    owner: {{ ansible_user }}
+    group: {{ ansible_user }}
     mode: '0644'
 
 - name: Download calico.conf
   get_url:
     url: https://docs.projectcalico.org/v3.20/manifests/calico.yaml
-    dest: /home/vagrant/calico.yaml
+    dest: /home/{{ ansible_user }}/calico.yaml
 
 - name: Add pod config to calico.yaml
   lineinfile:
-    dest: /home/vagrant/calico.yaml
+    dest: /home/{{ ansible_user }}/calico.yaml
     regexp: '^\s{12}#\s*- name: CALICO_IPV4POOL_CIDR.*$'
     line: '            - name: CALICO_IPV4POOL_CIDR'
 
 - name: Add pod config to calico.yaml
   lineinfile:
-    dest: /home/vagrant/calico.yaml
+    dest: /home/{{ ansible_user }}/calico.yaml
     regexp: '^\s{12}#\s*  value: "192.168.0.0\/16".*$'
     line: '              value: "172.16.0.0/16"'
 
