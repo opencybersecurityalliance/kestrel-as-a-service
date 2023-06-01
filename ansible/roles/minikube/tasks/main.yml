@@ -56,7 +56,7 @@
 
 - name: adding existing user to group docker
   user:
-    name: {{ ansible_user }}
+    name: "{{ ansible_user }}"
     groups: docker
     append: yes
 
@@ -113,32 +113,32 @@
     state: present
     reload: true
 
+- name: Install IPtables-persistent for persistent iptables rules
+  apt:
+    name: iptables-persistent
+    update_cache: yes
+    state: present
+
 - name: Forward ports from outside vm to minikube  
   become: yes
   ansible.builtin.iptables:
     table: nat
     chain: PREROUTING
     protocol: tcp
-    destination: 192.168.50.9
+    destination: "{{ external_ip }}"
     destination_ports: '30000:32767'
     jump: DNAT
     to_destination: '192.168.49.2:30000-32767'
+  notify: saveip6tables
 
-- name: Restart iptables service
-  ansible.builtin.service:
-    name: iptables
-    state: restarted
-
-- name: Reload minikube service
-  copy: 
-    src: minikube.service
-    dest: /etc/systemd/system/minikube.service 
+- name: Create a minkube service
+  become: yes
+  ansible.builtin.template:
+    src: minikube.service.j2
+    dest: /etc/systemd/system/minikube.service
     mode: 644
-    notify:
-      - reload systemctl
 
-- name: enable
+- name: enable minikube service for future reboots
   service: 
     name: minikube.service 
-    state: restarted
     enabled: yes

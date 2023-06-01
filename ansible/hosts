@@ -16,6 +16,7 @@ ansible_user=vagrant
 [minikube:vars]
 ansible_user=vagrant
 kaas_env=minikube
+external_ip=192.168.50.9
  
 [masters]
 192.168.50.10

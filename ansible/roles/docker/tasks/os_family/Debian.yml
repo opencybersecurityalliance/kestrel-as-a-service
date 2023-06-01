@@ -3,7 +3,7 @@
 - name: Install dependencies
   apt:
     name: [
-      python,
+      python3,
       curl,
       apt-transport-https,
       ca-certificates,
