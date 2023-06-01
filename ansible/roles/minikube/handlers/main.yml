@@ -1,3 +1,11 @@
 ---
 - name: reload systemctl
   command: systemctl daemon-reload
+
+- name: saveiptables
+  shell: iptables-save > /etc/iptables/rules.v4
+  become: yes
+
+- name: saveip6tables
+  shell: ip6tables-save > /etc/iptables/rules.v6
+  become: yes
