@@ -1,0 +1,58 @@
+[controller]
+kaas-ansible-controller ansible_host=192.168.50.8
+
+[controller:vars]
+ansible_user=vagrant
+
+[nfs]
+kaas-nfs ansible_host=192.168.50.7
+
+[nfs:vars]
+ansible_user=vagrant
+
+[minikube1]
+kaas-minikube-ubuntu ansible_host=192.168.50.9
+
+[minikube1:vars]
+ansible_user=vagrant
+external_ip=192.168.50.9
+
+[minikube2]
+kaas-minikube-rhel ansible_host=192.168.50.6
+
+[minikube2:vars]
+ansible_user=vagrant
+external_ip=192.168.50.6
+ 
+[masters]
+kaas-master-1 ansible_host=192.168.50.10
+
+[masters:vars]
+ansible_user=vagrant
+
+[nodes]
+kaas-node-1 ansible-host=192.168.50.13
+
+[nodes:vars]
+ansible_user=vagrant
+
+[kubernetes:children]
+masters
+nodes
+nfs
+
+[minikubes:children]
+minikube1
+minikube2
+
+[all]
+kaas-nfs ansible-host=192.168.50.7
+kaas-master-1 ansible-host=192.168.50.10
+kaas-node-1 ansible-host=192.168.50.13
+kaas-ansible-controller ansible-host=192.168.50.8
+kaas-minikube-ubuntu ansible-host=192.168.50.9
+kaas-minikube-rhel ansible-host=192.168.50.6 
+
+[all:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_user=vagrant

@@ -1,0 +1,68 @@
+---
+- name: register with subscription-manager
+  community.general.redhat_subscription:
+    state: present
+    username: ""
+    password: ""
+    auto_attach: true
+    force_register: true
+
+- name: Upgrade all packages
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+    update_cache: true
+
+- name: Install required packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Add Docker repo
+  get_url:
+    url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+#- name: Install containerd packages
+#  yum:
+#    name: "containerd.io"
+#    state: latest
+#    url: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+
+- name: Install Docker
+  package:
+    name: docker-ce
+    state: latest
+
+- name: Install Docker
+  package:
+    name: docker-ce-cli
+    state: latest
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: be sure firewalld is disabled
+  systemd: 
+    name: firewalld 
+    enabled: no
+    state: stopped
+
+- name: install pip
+  yum:
+    name: python3-pip
+    update_cache: yes
+    state: present
+
+- name: install docker-py, kubernetes and docker-compose
+  pip:
+    name: [
+      kubernetes,
+    ]
+    state: present

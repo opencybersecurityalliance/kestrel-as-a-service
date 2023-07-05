@@ -11,3 +11,4 @@ super-linter.log
 /archive
 *.log
 *.vdi
+packer_cache

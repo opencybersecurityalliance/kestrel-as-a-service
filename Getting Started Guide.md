@@ -1,9 +1,62 @@
-**Building the KaaS Environment** 
+# Getting Started with Kestrel as a Service (KaaS)
+
+## Overview
+
+There are multiple automation deployment models that we focused on for usage. This gives flexibility in the install and configuration of KaaS.  We will walk through each of the deployment models and then focus on the benefits of the Kestrel as a Service Model as well as running your first Team Hunt.
+
+The deployment models allow automation from scratch, existing infrastructure or an existing cluster.
+
+## Deployment Models
+
+There are multiple options available as seen in the Mindmap below to show starting at multiple points.  There are several questions to answer to determine your starting point.
+
+1. Do you have Virtual Machines Running or starting from scratch?
+2. Do you have a preference of Operating System?
+3. Are you creating a sandbox environment or a production environment?
+4. Can the supporting products be installed on your host?
+
+Let's start off by showing the general process of starting from scratch before going into the deployment mindmap models.  The validated high level steps from scratch for a development team sandbox with Minikube on Ubuntu are:
+
+| Step | Manual or Auto | Description |
+| --- | --- | --- |
+| 1 | Manual | Install Vagrant from https://developer.hashicorp.com/vagrant/downloads |
+| 2 | Manual | Install Virtualbox from https://www.virtualbox.org/wiki/Downloads |
+| 3 | Manual | Install git |
+| 4 | Manual | Clone the repo using `git clone https://github.com/opencybersecurityalliance/kestrel-as-a-service` |
+| 5 | Auto | Create the virtual machines by running `vagrant up` |
+| 6 | Manual | Connect to the Ansible Controller |
+| 7 | Auto | Deploy Kubernetes, supporting projects and KaaS by running the `deploy-minikube.sh` script |
+| 8 | Manual | Browse to the Kubernetes dashboard and KaaS dashboard |
+
+This is a high level overview but we will go through each option and step in detail.
+
+## Deploy from Scratch for a new environment
+
+The environment is created by using the overview steps above.  To access the 
+
+## Deploy with Existing Virtual Machines
+
+This deployment model assumes the machines are built with a basic configuration.
+
+### Prerequisites
+
+Note the vagrant build does the below automaticallyin the bootstrap.sh file
+Ansible is installed on a ansible controller node 
+/etc/hosts has been built on all machines
+The user that ansible is going to use has been created on the VMs
+keygen has been run on the controller node, and public key copied to the nodes
+Clone the repo from kaas
+
+## Deploy with Existing Virtual Machine and Kubernetes Cluster
 
 
-Building the Kuhbernetes multi-node enterprise environment
 
-Currently the testing for milestone 1 is using the nfs, controller, node-1 and master-1 virtual machines with a base Ubuntu, with the addition of Keycloakansible module. Minikube (1 VM) and Fedora are in progress.
+1. Existing Baremetal/VMs
+
+2. New Environment
+
+
+Curre, ,.nmnn.nm,ntly the testing for milestone 1 is using the nfs, controller, node-1 and master-1 virtual machines with a base Ubuntu, with the addition of Keycloakansible module. Minikube (1 VM) and Fedora are in progress.
 
 Steps to build and test the environment using the Ansible roles defined in the site-kubernetes.yaml.
 
@@ -76,7 +129,7 @@ NOTE: change IP to variable instead of static for iptables
 sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
 sudo vim /etc/sysctl.conf & change net.ipv4.ip_forward = 1
 sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
+tcpdump
 
 sudo iptables -t nat -I PREROUTING -p tcp -d 192.168.50.9 --dport 30000:32767 -j DNAT --to 192.168.49.2:30000-32767
 -t table        table to manipulate (default: `filter')
@@ -105,3 +158,14 @@ apt-get install build-essential libssl-dev libffi-dev python-dev
 Jupyterhub
 
 
+Testing 7/3/2023
+
+create infrastructure ---
+run vagrant file
+-controller, minikube-ubuntu, minikube-rhel setup
+run controller-setup.sh on controller ( installs ansible,copies ssh key to servers, updates host file )
+run ansible-test.sh to test ssh connection and ansible-module
+
+create platform ---
+
+run deploy-minikube.sh (change remote_user)

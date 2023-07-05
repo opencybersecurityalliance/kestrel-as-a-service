@@ -1,0 +1,21 @@
+---
+- name: Install dependencies
+  apt:
+    name: [
+      python3,
+      curl,
+      apt-transport-https,
+      ca-certificates,
+      gnupg2,
+      software-properties-common,
+      wget,
+      net-tools,
+      iputils-ping,
+      python3-pip,
+      sshpass,
+      nfs-common,
+      git,
+    ]
+    state: present
+
+

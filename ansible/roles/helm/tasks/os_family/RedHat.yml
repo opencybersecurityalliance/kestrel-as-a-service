@@ -1,0 +1,6 @@
+---
+- name: install helm
+  become: no
+  ansible.builtin.shell:
+    cmd: "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"
+

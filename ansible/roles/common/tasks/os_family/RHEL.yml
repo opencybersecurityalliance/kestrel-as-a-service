@@ -1,0 +1,16 @@
+---
+- name: Install dependencies
+  yum:
+    name: [
+      python3,
+      curl,
+      ca-certificates,
+      wget,
+      python3-pip,
+      sshpass,
+      nfs-common,
+      yum-utils,
+      git,
+    ]
+    state: present
+

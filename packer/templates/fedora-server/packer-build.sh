@@ -1,0 +1,1 @@
+ packer build --force -var-file='fedora38.pkrvars.hcl' -var 'vm_name=fedora-37-x86_64' -var 'provider_name=virtualbox' fedora-server.pkr.hcl

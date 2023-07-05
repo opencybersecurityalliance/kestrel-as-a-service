@@ -1,1 +1,1 @@
-ansible-playbook -i ansible/hosts ansible/site-minikube.yaml
+ansible-playbook -i inventory ansible/site-minikube.yaml -vvv

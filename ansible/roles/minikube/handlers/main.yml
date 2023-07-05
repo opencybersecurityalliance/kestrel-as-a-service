@@ -5,7 +5,20 @@
 - name: saveiptables
   shell: iptables-save > /etc/iptables/rules.v4
   become: yes
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: saveip6tables
   shell: ip6tables-save > /etc/iptables/rules.v6
   become: yes
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: saveiptables
+  shell: iptables-save > /etc/sysconfig/iptables
+  become: yes
+  when: ansible_facts['os_family'] == 'Redhat'
+
+- name: saveip6tables
+  shell: ip6tables-save > /etc/sysconfig/ip6tables
+  become: yes
+  when: ansible_facts['os_family'] == 'Redhat'
+  

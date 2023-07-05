@@ -1,0 +1,88 @@
+---
+- name: Disable UFW on hosts
+  ufw:
+    state: disabled
+  when: ansible_facts['os_family'] == 'Debian'
+
+#- name: JHDB Copy storage config file
+#  copy:
+#    src: kaas-storage.yaml
+#    dest: '/home/{{ ansible_user }}/kaas-storage.yaml'
+
+#- name: JHDB Apply storage manifest to the cluster.
+#  become: false
+#  kubernetes.core.k8s:
+#    state: present
+#    src: /home/{{ ansible_user }}/kaas-storage.yaml
+
+#- name: JHDB Copy PV config file
+#  copy:
+#    src: kaas-pv.yaml
+#    dest: '/home/{{ ansible_user }}/kaas-pv.yaml'
+
+#- name: JHDB Apply pv manifest to the cluster.
+#  become: false
+#  kubernetes.core.k8s:
+#    state: present
+#    src: /home/{{ ansible_user }}/kaas-pv.yaml
+
+#- name: JHDB Copy pvc config file
+#  copy:
+#    src: kaas-pvc.yaml
+#    dest: '/home/{{ ansible_user }}/kaas-pvc.yaml'
+
+#- name: USER Copy user PV config file
+#  copy:
+#    src: kaas-users-pv.yaml
+#    dest: '/home/{{ ansible_user }}/kaas-users-pv.yaml'
+
+#- name: USER Apply pv manifest to the cluster.
+#  become: false
+#  kubernetes.core.k8s:
+#    state: present
+#    src: /home/{{ ansible_user }}/kaas-users-pv.yaml
+
+#- name: USER Copy user PVC config file
+#  copy:
+#    src: kaas-users-pvc.yaml
+#    dest: '/home/{{ ansible_user }}/kaas-users-pvc.yaml'
+
+#- name: Deploy Jupyterhub from url with 30 min wait
+#  become: no
+#  kubernetes.core.helm:
+#    timeout: 30m0s
+#    binary_path: /usr/local/bin
+#    wait: true
+#    name: kaas
+#    chart_ref: "https://jupyterhub.github.io/helm-chart/jupyterhub-2.0.0.tgz"
+#    create_namespace: true
+#    release_namespace: kaas
+#    release_state: present
+#    values_files: /home/{{ ansible_user }}/jupyterhub-config.yaml
+#    kubeconfig: /home/{{ ansible_user }}/.kube/config
+
+#- name: USER Apply user pvc manifest to the cluster.
+#  become: false
+#  kubernetes.core.k8s:
+#    state: present
+#    src: /home/{{ ansible_user }}/kaas-users-pvc.yaml
+
+#- name: Wait for kaas kubernetes dashboard to start.
+#  local_action: 
+#    module: wait_for
+#    host: "minikube"
+#    port: "30081"
+#    delay: 10
+#    timeout: 1800
+#    state: started
+#    msg: "Kubernetes Dashboard port 30081 PORT is not Listening"
+
+#- name: Wait for kaas dashboard to start.
+#  local_action: 
+#    module: wait_for
+#    host: "minikube"
+#    port: "30080"
+#    delay: 10
+#    timeout: 1800
+#    state: started
+#    msg: "KaaS Junpyterhub Dashboard port 30080 PORT is not Listening"

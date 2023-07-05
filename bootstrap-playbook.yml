@@ -1,0 +1,56 @@
+---
+- hosts: controller
+  become: yes
+
+  tasks:
+  - name: "Install initial Packages"
+    ansible.builtin.package: "name={{ item }} state=present"
+    with_items:
+      - curl
+      - wget
+      - python3-pip
+      - sshpass
+      - git
+
+  - name: Git KaaS checkout
+    become: no
+    ansible.builtin.git:
+      repo: 'https://github.com/opencybersecurityalliance/kestrel-as-a-service.git'
+      dest: ~/git
+
+  - name: Add IP address of all hosts to all hosts
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '.*{{ item }}$'
+      line: "{{ hostvars[item].ansible_host }} {{item}}"
+      state: present
+    when: hostvars[item].ansible_host is defined
+    with_items: "{{ groups.all }}"
+
+  - name: Allow SSH password authentication
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication yes"
+      state: present
+      validate: sshd -t -f %s
+    notify:
+      - restart sshd
+
+  - name: SSH KeyGen command
+    become: no
+    shell: > 
+      ssh-keygen -q -b 2048 -t rsa -N "" -C "creating SSH" -f ~/.ssh/id_rsa
+      creates="~/.ssh/id_rsa"
+
+  - name: Copy key ubuntu
+    become: no
+    command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-ubuntu
+
+  - name: Copy key rhel
+    become: no
+    command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-rhel
+  
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
