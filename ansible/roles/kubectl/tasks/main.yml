@@ -26,8 +26,3 @@
     owner: root
     group: root
     mode: '+x'
-
-- name: Check if kubectl is installed
-  shell: kubectl version --client
-  register: client
-  failed_when: client.rc > 1

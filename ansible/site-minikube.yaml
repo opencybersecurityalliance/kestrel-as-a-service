@@ -1,7 +1,6 @@
 ---
 - name: Install minikube
-  hosts: minikube
-  remote_user: kaas
+  hosts: minikubes
   become: true
   roles:
     - docker
@@ -9,8 +8,7 @@
     - minikube
 
 - name: Install kaas
-  hosts: minikube
-  remote_user: kaas
+  hosts: minikubes
   become: true
   roles:
     - helm

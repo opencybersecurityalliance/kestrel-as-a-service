@@ -1,55 +1,16 @@
 ---
+- name: Install docker and dependencies
+  include: "os_family/{{ ansible_os_family }}.yml"
+
 - name: Copy jupyterhub config file
   copy:
     src: jupyterhub-config.yaml
     dest: '/home/{{ ansible_user }}/jupyterhub-config.yaml'
 
-#- name: JHDB Copy storage config file
-#  copy:
-#    src: kaas-storage.yaml
-#    dest: '/home/{{ ansible_user }}/kaas-storage.yaml'
-
-#- name: JHDB Apply storage manifest to the cluster.
-#  become: false
-#  kubernetes.core.k8s:
-#    state: present
-#    src: /home/{{ ansible_user }}/kaas-storage.yaml
-
-#- name: JHDB Copy PV config file
-#  copy:
-#    src: kaas-pv.yaml
-#    dest: '/home/{{ ansible_user }}/kaas-pv.yaml'
-
-#- name: JHDB Apply pv manifest to the cluster.
-#  become: false
-#  kubernetes.core.k8s:
-#    state: present
-#    src: /home/{{ ansible_user }}/kaas-pv.yaml
-
-#- name: JHDB Copy pvc config file
-#  copy:
-#    src: kaas-pvc.yaml
-#    dest: '/home/{{ ansible_user }}/kaas-pvc.yaml'
-
-#- name: USER Copy user PV config file
-#  copy:
-#    src: kaas-users-pv.yaml
-#    dest: '/home/{{ ansible_user }}/kaas-users-pv.yaml'
-
-#- name: USER Apply pv manifest to the cluster.
-#  become: false
-#  kubernetes.core.k8s:
-#    state: present
-#    src: /home/{{ ansible_user }}/kaas-users-pv.yaml
-
-#- name: USER Copy user PVC config file
-#  copy:
-#    src: kaas-users-pvc.yaml
-#    dest: '/home/{{ ansible_user }}/kaas-users-pvc.yaml'
-
-- name: Deploy Jupyterhub from url with 45 min wait
+- name: Deploy Jupyterhub from url with 30 min wait
+  become: no
   kubernetes.core.helm:
-    timeout: 15m0s
+    timeout: 30m0s
     wait: true
     name: kaas
     chart_ref: "https://jupyterhub.github.io/helm-chart/jupyterhub-2.0.0.tgz"
@@ -59,8 +20,23 @@
     values_files: /home/{{ ansible_user }}/jupyterhub-config.yaml
     kubeconfig: /home/{{ ansible_user }}/.kube/config
 
-#- name: USER Apply user pvc manifest to the cluster.
-#  become: false
-#  kubernetes.core.k8s:
-#    state: present
-#    src: /home/{{ ansible_user }}/kaas-users-pvc.yaml
+- name: Wait for kaas kubernetes dashboard to start.
+  local_action: 
+    module: wait_for
+    host: "{{ ansible_host }}"
+    port: "30081"
+    delay: 10
+    timeout: 1800
+    state: started
+    msg: "Kubernetes Dashboard port 30081 PORT is not Listening"
+
+- name: Wait for kaas Jupyterhub dashboard to start.
+  local_action: 
+    module: wait_for
+    host: "{{ ansible_host }}"
+    port: "30080"
+    delay: 10
+    timeout: 1800
+    state: started
+    msg: "KaaS Junpyterhub Dashboard port 30080 PORT is not Listening"
+  

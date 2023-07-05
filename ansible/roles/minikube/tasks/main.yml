@@ -65,7 +65,7 @@
 
 - name: Start minikube
   become: no
-  command: minikube start --driver=docker --cpus=4 --memory=max --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  command: minikube start --driver=docker --cpus=6 --memory=12gb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
 
 - name: minikube info
   become: no
@@ -91,12 +91,14 @@
   apt:
     pkg: python3-openssl
     state: absent
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: NOTE2 - research python ssl issue
   become: false
   ansible.builtin.pip:
     name: pyOpenSSL
     state: present
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Update ports for dashboard file
   become: false
@@ -118,6 +120,14 @@
     name: iptables-persistent
     update_cache: yes
     state: present
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install IPtables-persistent for persistent iptables rules
+  yum:
+    name: iptables-services
+    update_cache: yes
+    state: present
+  when: ansible_facts['os_family'] == 'Redhat'
 
 - name: Forward ports from outside vm to minikube  
   become: yes
@@ -125,11 +135,11 @@
     table: nat
     chain: PREROUTING
     protocol: tcp
-    destination: "{{ external_ip }}"
+    destination: "{{ ansible_host }}"
     destination_ports: '30000:32767'
     jump: DNAT
     to_destination: '192.168.49.2:30000-32767'
-  notify: saveip6tables
+  notify: saveiptables
 
 - name: Create a minkube service
   become: yes
