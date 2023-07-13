@@ -20,23 +20,23 @@
     values_files: /home/{{ ansible_user }}/jupyterhub-config.yaml
     kubeconfig: /home/{{ ansible_user }}/.kube/config
 
-- name: Wait for kaas kubernetes dashboard to start.
-  local_action: 
-    module: wait_for
-    host: "{{ ansible_host }}"
-    port: "30081"
-    delay: 10
-    timeout: 1800
-    state: started
-    msg: "Kubernetes Dashboard port 30081 PORT is not Listening"
+#- name: Wait for kaas kubernetes dashboard to start.
+#  local_action: 
+#    module: wait_for
+#    host: "{{ ansible_host }}"
+#    port: "30081"
+#    delay: 10
+#    timeout: 1800
+#    state: started
+#    msg: "Kubernetes Dashboard port 30081 PORT is not Listening"
 
-- name: Wait for kaas Jupyterhub dashboard to start.
-  local_action: 
-    module: wait_for
-    host: "{{ ansible_host }}"
-    port: "30080"
-    delay: 10
-    timeout: 1800
-    state: started
-    msg: "KaaS Junpyterhub Dashboard port 30080 PORT is not Listening"
+#- name: Wait for kaas Jupyterhub dashboard to start.
+#  local_action: 
+#    module: wait_for
+#    host: "{{ ansible_host }}"
+#    port: "30080"
+#    delay: 10
+#    timeout: 1800
+#    state: started
+#    msg: "KaaS Junpyterhub Dashboard port 30080 PORT is not Listening"
   
