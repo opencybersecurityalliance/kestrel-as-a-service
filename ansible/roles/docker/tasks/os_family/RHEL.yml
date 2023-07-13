@@ -2,16 +2,38 @@
 - name: register with subscription-manager
   community.general.redhat_subscription:
     state: present
-    username: ""
-    password: ""
+    username: "{{ rhel_username }}"
+    password: "{{ rhel_password }}"
     auto_attach: true
     force_register: true
+  when: rhel_register == "yes"
 
 - name: Upgrade all packages
   ansible.builtin.yum:
     name: '*'
     state: latest
     update_cache: true
+
+- name: remove docker
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
+    - docker
+    - docker-client
+    - docker-client-latest
+    - docker-common
+    - docker-latest
+    - docker-latest-logrotate
+    - docker-logrotate
+    - docker-engine
+
+- name: Remove docker config
+  command: sudo rm -rf /var/lib/docker
 
 - name: Install required packages
   yum:
@@ -21,11 +43,12 @@
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
+    - podman
 
-- name: Add Docker repo
-  get_url:
-    url: "https://download.docker.com/linux/centos/docker-ce.repo"
-    dest: /etc/yum.repos.d/docer-ce.repo
+#- name: Add Docker repo
+#  get_url:
+#    url: "https://download.docker.com/linux/centos/docker-ce.repo"
+#    dest: /etc/yum.repos.d/docer-ce.repo
 
 #- name: Install containerd packages
 #  yum:
@@ -33,26 +56,26 @@
 #    state: latest
 #    url: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
 
-- name: Install Docker
-  package:
-    name: docker-ce
-    state: latest
+#- name: Install Docker
+#  package:
+#    name: docker-ce
+#    state: latest
 
-- name: Install Docker
-  package:
-    name: docker-ce-cli
-    state: latest
+#- name: Install Docker
+#  package:
+#    name: docker-ce-cli
+#    state: latest
 
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   ansible.posix.selinux:
     policy: targeted
     state: permissive
 
-- name: be sure firewalld is disabled
-  systemd: 
-    name: firewalld 
-    enabled: no
-    state: stopped
+#- name: be sure firewalld is disabled
+#  systemd: 
+#    name: firewalld 
+#    enabled: no
+#    state: stopped
 
 - name: install pip
   yum:

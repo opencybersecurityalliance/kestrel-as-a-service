@@ -53,19 +53,32 @@
   ansible.builtin.group:
     name: docker
     state: present
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: adding existing user to group docker
   user:
     name: "{{ ansible_user }}"
     groups: docker
     append: yes
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Changing permissions
   file: dest=/var/run/docker.sock mode=666
+  when: ansible_facts['os_family'] == 'Debian'
+  
+- name: Set to rootless - kernel 5.11 required for true - version is 4.18.0-425.3.1.el8.x86_64 on 8.8
+  become: no
+  command: minikube config set rootless false
 
 - name: Start minikube
   become: no
-  command: minikube start --driver=docker --cpus=6 --memory=12gb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  command: minikube start --driver=podman --container-runtime=containerd --cpus=6 --memory=25000mb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: Start minikube
+  become: no
+  command: minikube start --driver=docker --cpus=6 --memory=25000mb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: minikube info
   become: no
@@ -127,7 +140,7 @@
     name: iptables-services
     update_cache: yes
     state: present
-  when: ansible_facts['os_family'] == 'Redhat'
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Forward ports from outside vm to minikube  
   become: yes
@@ -139,7 +152,12 @@
     destination_ports: '30000:32767'
     jump: DNAT
     to_destination: '192.168.49.2:30000-32767'
-  notify: saveiptables
+  notify:
+  - RedHat saveiptables
+  - Debian saveiptables
+  - RedHat saveip6tables
+  - Debian saveip6tables
+  - reload systemctl
 
 - name: Create a minkube service
   become: yes

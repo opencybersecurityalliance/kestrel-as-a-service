@@ -85,8 +85,8 @@ Vagrant.configure("2") do |config|
                 nodeconfig.vm.network :private_network, ip: node[:ip]
                 nodeconfig.vm.provider :virtualbox do |vb|
                     vb.name = "kaas-" + node[:hostname]
-                    vb.memory = 16000
-                    vb.cpus = 6
+                    vb.memory = 32000
+                    vb.cpus = 8
                     vb.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
                 end
                 nodeconfig.vm.provision "shell", inline: $script

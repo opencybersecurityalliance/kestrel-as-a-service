@@ -1,8 +1,8 @@
 ---
-- name: Disable UFW on hosts
-  ufw:
-    state: disabled
-  when: ansible_facts['os_family'] == 'Debian'
+#- name: Disable UFW on hosts
+#  ufw:
+#    state: disabled
+#  when: ansible_facts['os_family'] == 'Debian'
 
 #- name: JHDB Copy storage config file
 #  copy:
