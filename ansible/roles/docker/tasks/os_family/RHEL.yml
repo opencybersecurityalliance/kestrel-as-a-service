@@ -8,6 +8,13 @@
     force_register: true
   when: rhel_register == "yes"
 
+- name: Fail task when the command error output prints FAILED
+  become: yes
+  ansible.builtin.command: subscription-manager status
+  register: command_result
+  failed_when: "'Unknown' in command_result.stdout"
+  any_errors_fatal: true
+
 - name: Upgrade all packages
   ansible.builtin.yum:
     name: '*'

@@ -121,6 +121,7 @@ kubectl port-forward --address 0.0.0.0 service/<service-name> 8080:80
 kubectl port-forward --address 0.0.0.0 service/kubernetes-dashboard 8080:81 -n kubernetes-dashboard & kubectl port-forward --address 0.0.0.0 service/proxy-public 8081:80 -n kaas &
 minikube mount $HOME:/host
 
+kubectl port-forward --address 192.168.50.9 service/kubernetes-dashboard 30081:81
 
 
 NOTE: change IP to variable instead of static for iptables

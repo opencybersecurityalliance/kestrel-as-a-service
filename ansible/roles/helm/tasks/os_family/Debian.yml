@@ -1,2 +1,5 @@
 --- 
-
+- name: Install helm for Canonical Kubernetes
+  snap:
+    name: helm
+    classic: yes

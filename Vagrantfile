@@ -20,7 +20,7 @@ node = 1 # max should be dependent on resources
 control = 1 #  max should only be 3 due to IP scheme
 kaas_env = "two" # yes for minikube only VM, no for full environment or both, none no controller
 minikube_nodes = [
-  { :hostname => 'minikube-ubuntu', :ip => '192.168.50.9', :box => 'bento/ubuntu-22.04' },
+  { :hostname => 'minikube-ubuntu', :ip => '192.168.50.9', :box => 'ubuntu/focal64' },
   { :hostname => 'minikube-rhel',   :ip => '192.168.50.6', :box => 'generic/rhel8' },
 ]
 
