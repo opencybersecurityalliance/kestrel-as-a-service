@@ -7,10 +7,10 @@
     src: jupyterhub-config.yaml
     dest: '/home/{{ ansible_user }}/jupyterhub-config.yaml'
 
-- name: Deploy Jupyterhub from url with 30 min wait
+- name: Deploy Jupyterhub from url with up to 45 min wait
   become: no
   kubernetes.core.helm:
-    timeout: 30m0s
+    timeout: 45m0s
     wait: true
     name: kaas
     chart_ref: "https://jupyterhub.github.io/helm-chart/jupyterhub-2.0.0.tgz"

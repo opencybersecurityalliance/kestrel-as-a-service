@@ -1,9 +1,9 @@
 ---
 - name: enable docker
-  service: enabled=yes name=docker#
+  service: enabled=yes name=docker
 
 - name: start docker
   service:
     name=docker
     state=restarted
-  when: ansible_facts['os_family'] == 'Debian'
+#  when: ansible_facts['os_family'] == 'Debian'

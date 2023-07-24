@@ -1,10 +1,4 @@
 ---
-- name: Upgrade all packages
-  ansible.builtin.apt:
-    name: '*'
-    state: latest
-    update_cache: true
-
 - name: Install dependencies
   apt:
     name: [
@@ -14,52 +8,33 @@
       ca-certificates,
       gnupg2,
       software-properties-common,
+      python3-pip,
     ]
-    state: present
-
-- name: remove old docker
-  apt:
-    name: [
-      docker,
-      docker-engine,
-      docker.io,
-    ]
-    state: absent
-
-- name: extra packages for Ubuntu
-  apt:
-    name: linux-image-extra-virtual
-    state: present
-  when: ansible_distribution == "Ubuntu"
-
-- name: add key id
-  apt_key:
-    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
-    state: present
-
-- name: add docker repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
-    filename: docker
-    state: present
-
-- name: install docker
-  apt:
-    name: docker-ce
     update_cache: yes
     state: present
 
-- name: install pip
+- name: Install podman repo
+  shell: echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+- name: Install podman key
+  shell: curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key | sudo apt-key add
+
+- name: Install podman
   apt:
-    name: python3-pip
+    name: [
+      podman,
+    ]
     update_cache: yes
     state: present
 
 - name: install docker-py, kubernetes and docker-compose
   pip:
     name: [
-      docker-py,
-      docker-compose,
       kubernetes,
     ]
     state: present
+
+- name: Upgrade all packages
+  ansible.builtin.apt:
+    name: '*'
+    state: latest
+    update_cache: true

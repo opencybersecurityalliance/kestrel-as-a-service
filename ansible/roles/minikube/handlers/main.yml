@@ -1,7 +1,4 @@
 ---
-- name: reload systemctl
-  command: systemctl daemon-reload
-
 - name: Debian saveiptables
   shell: iptables-save > /etc/iptables/rules.v4
   become: yes
@@ -22,3 +19,5 @@
   become: yes
   when: ansible_facts['os_family'] == 'RedHat'
   
+- name: RedHat reload systemctl
+  command: systemctl daemon-reload

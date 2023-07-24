@@ -1,0 +1,161 @@
+--- 
+- name: Install containerd
+  apt: 
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - containerd
+
+- name: Configure containerd
+  blockinfile:
+    create: true
+    path: /etc/modules-load.d/containerd.conf
+    block: |
+      overlay
+      br_netfilter
+
+- name: Enable kernel modules
+  shell: |
+    modprobe overlay
+    modprobe br_netfilter
+
+- name: Configure IP forwarding and iptables
+  blockinfile:
+    create: true
+    path: /etc/sysctl.conf
+    block: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+
+- name: Persist changes
+  command: sysctl -p
+
+- name: create download directory
+  file:
+    state: directory
+    mode: 'u=rwx,go=rx'
+    dest: '{{ minikube_download_dir }}'
+
+- name: download sha256sum
+  get_url:
+    url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}.sha256'
+    dest: '{{ minikube_download_dir }}/{{ minikube_download_filename }}.sha256'
+    force: no
+    use_proxy: yes
+    validate_certs: yes
+    mode: 'u=rw,go=r'
+
+- name: read sha256sum
+  slurp:
+    src: '{{ minikube_download_dir }}/{{ minikube_download_filename }}.sha256'
+  register: minikube_sha256sum
+
+- name: download Minikube
+  get_url:
+    url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}'
+    dest: '{{ minikube_download_dir }}/{{ minikube_download_filename }}'
+    checksum: 'sha256:{{ minikube_sha256sum.content | b64decode | trim }}'
+    force: no
+    use_proxy: yes
+    validate_certs: yes
+    mode: 'u=rw,go=r'
+
+- name: create the Minikube installation dir
+  become: yes
+  file:
+    state: directory
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'
+    dest: '{{ minikube_install_dir }}'
+
+- name: install Minikube
+  become: yes
+  copy:
+    src: '{{ minikube_download_dir }}/{{ minikube_download_filename }}'
+    remote_src: yes
+    dest: '{{ minikube_install_path }}'
+    force: yes
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'
+  
+- name: Set to rootless - kernel 5.11 required for true - version is 4.18.0-425.3.1.el8.x86_64 on 8.8
+  become: no
+  command: minikube config set rootless false
+
+- name: Start minikube
+  become: no
+  command: minikube start --driver=podman --container-runtime=containerd --network-plugin=cni --cni=calico --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+
+- name: minikube info
+  become: no
+  register: minikube_info
+  command: kubectl cluster-info
+  changed_when: false
+  ignore_errors: true
+
+- name: check the status of minikube.
+  become: no
+  command: minikube status
+  register: minikube_status
+  changed_when: false
+  ignore_errors: true
+
+- name: copy update dashboard file
+  copy:
+    src: dashboard-update.yaml
+    dest: '/home/{{ ansible_user }}/dashboard-update.yaml'
+
+- name: NOTE1 - research python ssl issue
+  become: true
+  apt:
+    pkg: python3-openssl
+    state: absent
+
+- name: NOTE2 - research python ssl issue
+  become: false
+  ansible.builtin.pip:
+    name: pyOpenSSL
+    state: present
+
+- name: Update ports for dashboard file
+  become: false
+  kubernetes.core.k8s:
+    state: present
+    src: /home/{{ ansible_user }}/dashboard-update.yaml
+
+- name: Install IPtables-persistent for persistent iptables rules
+  apt:
+    name: iptables-persistent
+    update_cache: yes
+    state: present
+
+- name: Forward ports from outside vm to minikube  
+  become: yes
+  ansible.builtin.iptables:
+    table: nat
+    chain: PREROUTING
+    protocol: tcp
+    destination: "{{ ansible_host }}"
+    destination_ports: '30000:32767'
+    jump: DNAT
+    to_destination: '192.168.49.2:30000-32767'
+  notify:
+  - Debian saveiptables
+  - Debian saveip6tables
+
+- name: Create a minkube service
+  become: yes
+  ansible.builtin.template:
+    src: minikube.service.j2
+    dest: /etc/systemd/system/minikube.service
+    mode: u=rw,g=r,o=r
+
+- name: enable minikube service for future reboots
+  service: 
+    name: minikube.service 
+    enabled: yes
+
