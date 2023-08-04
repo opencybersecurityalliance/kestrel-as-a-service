@@ -49,7 +49,7 @@ nodes
 nfs
 
 [minikubes:children]
-minikube1
+minikube2
 
 [all]
 kaas-nfs ansible-host=192.168.50.7

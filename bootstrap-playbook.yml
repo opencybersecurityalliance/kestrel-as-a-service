@@ -45,10 +45,12 @@
 
   - name: Copy key ubuntu
     become: no
+    ignore_errors: True
     command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-ubuntu
 
   - name: Copy key rhel
     become: no
+    ignore_errors: True
     command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-rhel
   
   handlers:
