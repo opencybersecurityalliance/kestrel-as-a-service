@@ -16,8 +16,9 @@ kaas-minikube-ubuntu ansible_host=192.168.50.9
 [minikube1:vars]
 ansible_user=vagrant
 rhel_register="no"
-ubuntu_cpu=6
-ubuntu_memory=24000
+ubuntu_cpu=8
+ubuntu_memory=25000
+# minimum 4 cpu for host and 8gb memory for host
 
 [minikube2]
 kaas-minikube-rhel ansible_host=192.168.50.6
@@ -27,8 +28,8 @@ ansible_user=vagrant
 rhel_register="no"
 rhel_username=""
 rhel_password=""
-rhel_cpu=6
-rhel_memory=24000
+rhel_cpu=8
+rhel_memory=25000
 
 [masters]
 kaas-master-1 ansible_host=192.168.50.10

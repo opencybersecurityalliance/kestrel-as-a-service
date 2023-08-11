@@ -55,7 +55,7 @@
 
 - name: Start minikube
   become: no
-  command: minikube start --driver=podman --container-runtime=containerd --cpus="{{ rhel_cpu }}" --memory="{{ rhel_memory }}"mb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  command: minikube start --driver=podman --container-runtime=containerd --cpus="{{ rhel_cpu }}" --memory="{{ rhel_memory }}"mb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host --wait-timeout=15m0s
 
 - name: minikube info
   become: no

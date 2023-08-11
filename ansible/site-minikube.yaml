@@ -3,7 +3,7 @@
   hosts: minikubes
   become: true
   roles:
-    - docker
+    - podman
     - kubectl
     - minikube
 

@@ -81,14 +81,14 @@
     owner: root
     group: root
     mode: 'u=rwx,go=rx'
-  
-- name: Set to rootless - kernel 5.11 required for true - version is 4.18.0-425.3.1.el8.x86_64 on 8.8
-  become: no
-  command: minikube config set rootless false
 
 - name: Start minikube
   become: no
-  command: minikube start --driver=podman --container-runtime=containerd --network-plugin=cni --cni=calico --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
+  command: minikube delete --all=true --purge=true
+
+- name: Start minikube
+  become: no
+  command: minikube start --driver=podman --container-runtime=containerd --cni=calico --cpus="{{ ubuntu_cpu }}" --memory="{{ ubuntu_memory }}"mb --install-addons=true --addons dashboard --addons metrics-server --addons ingress --mount --mount-string /home/{{ ansible_user }}:/host
 
 - name: minikube info
   become: no
