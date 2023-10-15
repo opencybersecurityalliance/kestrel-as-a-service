@@ -14,8 +14,8 @@
 # kaas_env indicates minikube ("one" or "two" os's), multinode ("multi") or "both", "none" for controller only
 
 image_name = "bento/ubuntu-22.04" # or image_name = "generic/rhel8"
-image_controller = "kestrel-as-a-service/f37"
-image_controller_version = "2.0.0"
+image_controller = "kestrel-as-a-service/controller-f38"
+image_controller_version = "1.0.0"
 node = 1 # max should be dependent on resources
 control = 1 #  max should only be 3 due to IP scheme
 kaas_env = "two" # yes for minikube only VM, no for full environment or both, none no controller
