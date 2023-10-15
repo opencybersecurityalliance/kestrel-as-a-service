@@ -1,4 +1,4 @@
-.. image:: images/kaas-logo-drawio.png
+.. image:: logo/kaas-logo-san-serif-cloud.png
    :width: 432
    :alt: Kestrel as a Service
 
