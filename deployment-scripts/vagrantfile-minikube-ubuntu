@@ -1,0 +1,135 @@
+# IPs: 
+# ANSIBLE 192.168.50.8 
+# NFS 192.168.50.7 
+# Minikube 192.168.50.9 
+# NODE 192.168.50.13+ 
+# MASTER 192.168.40.10 to *.12
+#
+# VARS
+# image_name bento/ubuntu-22.04 and generic/rhel8 tested
+# image_name2 for 2 minikube os nodes
+# image_controller for controller
+# control 1-3 nodes
+# node multiple
+# kaas_env indicates minikube ("one" or "two" os's), multinode ("multi") or "both", "none" for controller only
+
+image_name = "bento/ubuntu-22.04" # or image_name = "generic/rhel8"
+image_controller = "kestrel-deployment/controller-f38"
+image_controller_version = "1.0.0"
+node = 1 # max should be dependent on resources
+control = 1 #  max should only be 3 due to IP scheme
+kaas_env = "one" # yes for minikube only VM, no for full environment or both, none no controller
+minikube_nodes = [
+  { :hostname => 'minikube-ubuntu', :ip => '192.168.50.9', :box => 'ubuntu/focal64' },
+  { :hostname => 'minikube-rhel',   :ip => '192.168.50.6', :box => 'generic/rhel8' },
+]
+
+Vagrant.configure("2") do |config|
+    config.ssh.insert_key = false
+    config.vm.define "controller" do |controller|
+        controller.vm.boot_timeout = 600
+        controller.vm.synced_folder '../', '/vagrant', SharedFoldersEnableSymlinksCreate: false
+        controller.vm.box = image_controller
+        controller.vm.box_version = image_controller_version
+        controller.vm.hostname = "kaas-ansible-controller"
+        controller.vm.network "private_network", ip: "192.168.50.8"
+        controller.vm.provider :virtualbox do |vb|
+            vb.name = "kaas-ansible-controller"
+            vb.memory = 2048
+            vb.cpus = 2
+        end
+        controller.vm.provision "file", source: "../ansible", destination: "/tmp/ansible"
+        controller.vm.provision "shell", inline: "mkdir /ansible"
+        controller.vm.provision "shell", inline: "cp -R /tmp/ansible/* /ansible && chown -R vagrant:vagrant /ansible"
+    end
+
+    if  kaas_env == "multi"
+        config.vm.define "nfs" do |nfs|
+            nfs.vm.box = image_name
+            nfs.vm.hostname = "kaas-nfs"
+            nfs.vm.network "private_network", ip: "192.168.50.7"
+            nfs.vm.provider :virtualbox do |vb|
+                vb.name = "kaas-nfs"
+                vb.memory = 2048
+                vb.cpus = 2
+            end
+        end
+
+        (1..M).each do |i|
+            config.vm.define "master-#{i}" do |master|
+                master.vm.box = image_name
+                master.vm.network "private_network", ip: "192.168.50.#{i+9}"
+                master.vm.hostname = "kaas-master-#{i}"
+                master.vm.provider :virtualbox do |vb|
+                    vb.name = "kaas-master-#{i}"
+                    vb.memory = 2048
+                    vb.cpus = 4
+                    vb.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
+                end
+            end
+        end
+
+        (1..N).each do |i|
+            config.vm.define "node-#{i}" do |node|
+                node.vm.box = image_name
+                node.vm.network "private_network", ip: "192.168.50.#{i + 12}"
+                node.vm.hostname = "kaas-node-#{i}"
+                node.vm.provider :virtualbox do |vb|
+                    vb.name = "kaas-node-#{i}"
+                    vb.memory = 2028
+                    vb.cpus = 4
+                    vb.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
+                    disk = "local_storage_node#{i}.vdi"
+                    unless File.exist?(disk)
+                        vb.customize ['createhd', '--filename', disk, '--size', 20 * 1024]
+                    end
+                        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+                end
+            end
+        end
+    end
+    
+    if kaas_env == "one" || kaas_env == "both"
+        $script = <<-SCRIPT
+        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        sudo systemctl restart sshd
+        SCRIPT
+        config.vm.define "kaas-minikube-ubuntu" do |nodeconfig|
+            nodeconfig.vm.boot_timeout = 600
+            nodeconfig.vm.box = "ubuntu/focal64"
+            nodeconfig.vm.synced_folder '.', '/vagrant', disabled: true
+            nodeconfig.vm.hostname = "kaas-minikube-ubuntu"
+            nodeconfig.vm.network :private_network, ip: "192.168.50.9"
+            nodeconfig.vm.provider :virtualbox do |vb|
+                vb.name = "kaas-minikube-ubuntu"
+                vb.memory = 32000
+                vb.cpus = 12
+                vb.gui = true
+                vb.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
+            end
+            nodeconfig.vm.provision "shell", inline: $script
+        end
+    end
+
+    if kaas_env == "two" || kaas_env == "both"
+        $script = <<-SCRIPT
+        sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+        sudo systemctl restart sshd
+        SCRIPT
+        config.vm.define "kaas-minikube-rhel" do |nodeconfig|
+            nodeconfig.vm.boot_timeout = 600
+            nodeconfig.vm.box = "generic/rhel8"
+            nodeconfig.vm.synced_folder '.', '/vagrant', disabled: true
+            nodeconfig.vm.hostname = "kaas-minikube-rhel"
+            nodeconfig.vm.network :private_network, ip: "192.168.50.6"
+            nodeconfig.vm.provider :virtualbox do |vb|
+                vb.name = "kaas-minikube-rhel"
+                vb.memory = 32000
+                vb.cpus = 12
+                vb.customize ['modifyvm', :id, '--nested-hw-virt', 'on']
+            end
+            nodeconfig.vm.provision "shell", inline: $script
+        end
+    end
+
+end

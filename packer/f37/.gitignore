@@ -1,7 +1,0 @@
-# Ignore build "stuff"
-packer_cache
-build
-output*
-*.box
-*.iso
-.vagrant
