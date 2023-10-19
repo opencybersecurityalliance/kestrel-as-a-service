@@ -1,8 +1,8 @@
-.. image:: images/kaas-logo-drawio.png
+.. image:: logo/kaas-logo-san-serif-cloud.png
    :width: 432
    :alt: Kestrel as a Service
 
-**Kestrel as a Service (KaaS)** is a Kestrel container and deployable cloud-managed hunting service for large organizations.  This project will provide the code and instructions for deploying a Threat Hunting Team Enterprise Solution that is focused on being scalable, persistent and collaborative.
+**Kestrel as a Service (KaaS)** is a Kestrel container and deployable cloud-managed hunting service for large organizations.  This project will provide the code and instructions for deploying a Threat Hunting Team Enterprise Solution that is focused on being scalable, persistent and collaborative.  The Getting Started Guide folder has the documentation for Architecture, Deployment and further use case detail.
 
 **What is the problem space we are addressing?** Threat hunting can be slow and tedious due to the manual steps required. Kestrel is an open source project that provides a language for humans to express what to hunt and a machine interpreter that deals with how to hunt.  Although Kestrel improves the time to detect, there are limitations to team capabilities in threat hunting tools and standards. The power of team threat hunting may be able to remove the limitations, therefore, increasing the MTTD, achieved by combining Kestrel with JupyterHub hunts with Kestrel huntbooks in order to be persistent and shared by team members. 
 

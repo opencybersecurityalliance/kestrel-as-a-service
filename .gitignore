@@ -12,3 +12,4 @@ super-linter.log
 *.log
 *.vdi
 packer_cache
+pull-secret.txt
