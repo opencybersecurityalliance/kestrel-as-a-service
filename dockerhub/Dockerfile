@@ -36,23 +36,8 @@ RUN apt-get update --yes && \
 # install prerequisites
 # 1. from requirements.txt for jupyter hub
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/requirements.txt
-RUN apt-get install --yes \
-    # analytics::dataexfiltration
-    flask \
-    flask-cors \
-    tabulate \
-    # analytics::log4shell \
-    urllib3 \
-    # analytics::piniponmap \
-    geoip2 \
-    folium \
-    # analytics::sklearn-cluster \
-    scikit-learn \
-    gower \
-    # analytics::suspiciousscoring \
-    business-rules \
-    # analytics::attribute-plot \
-    matplotlib \
+ # analytics::dataexfiltration analytics::log4shell analytics::piniponmap analytics::sklearn-cluster analytics::attribute-plot analytics::suspiciousscoring 
+RUN apt-get install --yes flask flask-cors tabulate urllib3 geoip2 folium scikit-learn gower business-rules matplotlib
 # 2. from apt.txt
 # analytics prereq for cloning data-bucket-kestrel
 # mapped to apt.txt https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/apt.txt
