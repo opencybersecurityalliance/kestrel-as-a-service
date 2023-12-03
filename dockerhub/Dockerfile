@@ -49,8 +49,11 @@ USER ${NB_UID}
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
-# 1. Setup Git LFS
+# 1. Setup Git LFS - to setup gitlab-lfs for this container it has to be grabbed from the site as git-lfs is not in the repo for the base
 ################################
+# analytics prereq
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+RUN sudo apt-get install --yes git-lfs
 RUN git lfs install
 ################################
 # 2. Setup Kestrel Kernel
