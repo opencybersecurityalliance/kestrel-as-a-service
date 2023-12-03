@@ -58,12 +58,9 @@ RUN apt-get install --yes \
 # mapped to apt.txt https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/apt.txt
 RUN sudo apt-get install --yes git-lfs 
 RUN sudo apt-get install dnsutils whois
-################################
-
 RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID}
-
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
@@ -78,11 +75,9 @@ RUN kestrel_jupyter_setup
 RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyter/kernels/" && \
     chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
     rm -rf "${HOME}/.local"
-
 # Add R mimetype option to specify how the plot returns from R to the browser
 RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o ${HOME}/Rprofile.site
 RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R/etc && mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
-
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
