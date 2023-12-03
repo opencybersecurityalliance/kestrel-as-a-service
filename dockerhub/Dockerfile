@@ -41,11 +41,7 @@ RUN apt-get install --yes flask flask-cors tabulate urllib3 geoip2 folium scikit
 # 2. from apt.txt
 # analytics prereq for cloning data-bucket-kestrel
 # mapped to apt.txt https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/apt.txt
-RUN sudo apt-get install --yes git-lfs 
-RUN sudo apt-get install dnsutils whois
-RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
-# Switch back to jovyan to avoid accidental container runs as root
-USER ${NB_UID}
+# debian required
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
@@ -55,6 +51,9 @@ USER ${NB_UID}
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 RUN sudo apt-get install --yes git-lfs
 RUN git lfs install
+RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
+# Switch back to jovyan to avoid accidental container runs as root
+USER ${NB_UID}
 ################################
 # 2. Setup Kestrel Kernel
 ################################
