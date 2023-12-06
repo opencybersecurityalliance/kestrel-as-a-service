@@ -43,14 +43,14 @@
       ssh-keygen -q -b 2048 -t rsa -N "" -C "creating SSH" -f ~/.ssh/id_rsa
       creates="~/.ssh/id_rsa"
 
-  - name: Copy key ubuntu
+  - name: Copy key ubuntu - if minikube value is set to two in the vagrantfile then this will wait to timeout
     become: no
     ignore_errors: True
     command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-ubuntu
     vars:
       ansible_command_timeout: 30
 
-  - name: Copy key rhel
+  - name: Copy key rhel  - if minikube value is set to one in the vagrantfile then this will wait to timeout
     become: no
     ignore_errors: True
     command: sshpass -v -p vagrant ssh-copy-id -i /home/vagrant/.ssh/id_rsa.pub -o StrictHostKeyChecking=no vagrant@kaas-minikube-rhel

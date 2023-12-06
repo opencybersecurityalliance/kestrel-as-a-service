@@ -12,8 +12,8 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# ROOT ACTIVITIES
 USER root
-
 # Install all OS dependencies for fully functional notebook server
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
@@ -50,10 +50,13 @@ RUN apt-get install --yes flask flask-cors tabulate urllib3 geoip2 folium scikit
 # analytics prereq
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 RUN sudo apt-get install --yes git-lfs
-RUN git lfs install
 RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
+COPY kaas-logo-san-seriff.png /opt/kaas/kaas-logo-san-seriff.png
+
+# USER ACTIVITIES
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID}
+RUN git lfs install
 ################################
 # 2. Setup Kestrel Kernel
 ################################

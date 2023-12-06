@@ -7,11 +7,25 @@
 # Chart config reference:   https://zero-to-jupyterhub.readthedocs.io/en/stable/resources/reference.html
 # Chart default values:     https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/HEAD/jupyterhub/values.yaml
 # Available chart versions: https://jupyterhub.github.io/helm-chart/
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - adminuser1
+        - adminuser2
+      allowed_users:
+        - user3
+        - user4
+    DummyAuthenticator:
+      password: redhat
+    JupyterHub:
+      authenticator_class: dummy
 singleuser:
+  #logo_file
   startTimeout: 3600
   extraEnv:
     GRANT_SUDO: "yes"
-    NOTEBOOK_ARGS: "--allow-root"
+    NOTEBOOK_ARGS: "--allow-root --collaborative=true"
   uid: 0
   cmd: start-singleuser.sh
   image:
@@ -24,7 +38,7 @@ singleuser:
     - display_name: "Kestrel Threat Hunting"
       description: "Threat Hunting in Kube"
       kubespawner_override:
-        image: kpeeples/kaas-baseline:latest
+        image: kpeeples/kaas-baseline:v4
 proxy:
   service:
     type: NodePort
