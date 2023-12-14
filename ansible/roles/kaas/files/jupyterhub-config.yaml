@@ -20,6 +20,11 @@ hub:
       password: redhat
     JupyterHub:
       authenticator_class: dummy
+  extraConfig:
+    logoConfig: |
+      import urllib.request
+      urllib.request.urlretrieve("https://github.com/opencybersecurityalliance/kestrel-as-a-service/blob/main/images/", "kaas-logo-san-seriff.png")
+      c.JupyterHub.logo_file = '/srv/jupyterhub/kaas-logo-san-seriff.png'
 singleuser:
   #logo_file
   startTimeout: 3600

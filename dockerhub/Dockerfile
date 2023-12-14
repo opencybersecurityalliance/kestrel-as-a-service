@@ -89,6 +89,6 @@ RUN mkdir -p /home/jovyan/.config/kestrel && \
     ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/huntbooks/stixshifter.yaml && \
     ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/tutorial/stixshifter.yaml && \
     ln -s /home/jovyan/.config/kestrel/stixshifter.yaml /opt/kaas/kestrel-huntbook/blackhat22/stixshifter.yaml
-
-
+# this enables trusted ipynb files for jupyter
+RUN jupyter trust */*.ipynb
 
