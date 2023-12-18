@@ -99,3 +99,16 @@ RUN jupyter trust /opt/kaas/*.ipynb
 #   1. run for a standalone container
 #   2. run within Kaas Minikube
 #   3. run within KaaS Full Cluster
+#
+# KaaS Metrics
+#   1. Silo-d hunter without kestrel - minimal sharing
+#   2. standalone kestrel hunter - some collaboration
+#   3. KaaS kestrel hunter - full collaboration features
+#
+# Tutorial Order from easy to hardest
+#   kestrel-huntbook/tutorial
+#   kestrel-huntbook/blackhat22
+#   kestrel-huntbook/huntbooks
+#
+# ADD: kestrel-huntbook to default folder
+# ADD: slack hunter integration
