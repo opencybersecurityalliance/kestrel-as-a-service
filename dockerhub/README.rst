@@ -22,3 +22,4 @@ sudo docker push kpeeples/kaas-baseline:v1
 sudo docker push kpeeples/kaas-baseline:latest
 https://hub.docker.com/repository/docker/kpeeples/kaas-baseline/general
 
+https://developer.fedoraproject.org/tools/docker/docker-installation.html
