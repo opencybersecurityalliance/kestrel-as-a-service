@@ -74,9 +74,9 @@ RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R
 RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git /opt/kaas/kestrel-huntbook
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git /opt/kaas/kestrel-analytics
-RUN ln -s /home/jovyan/data-bucket-kestrel /opt/kaas/data-bucket-kestrel
-RUN ln -s /home/jovyan/kestrel-huntbook /opt/kaas/kestrel-huntbook
-RUN ln -s /home/jovyan/kestrel-analytics /opt/kaas/kestrel-analytics
+RUN ln -s /opt/kaas/data-bucket-kestrel /home/jovyan/data-bucket-kestrel 
+RUN ln -s /opt/kaas/kestrel-huntbook /home/jovyan/kestrel-huntbook 
+RUN ln -s /opt/kaas/kestrel-analytics /home/jovyan/kestrel-analytics 
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
