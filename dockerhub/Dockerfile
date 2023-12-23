@@ -5,13 +5,10 @@
 ARG OWNER=jupyter
 ARG BASE_CONTAINER=$OWNER/base-notebook
 FROM $BASE_CONTAINER
-
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
-
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
 # ROOT ACTIVITIES
 USER root
 # Install all OS dependencies for fully functional notebook server
@@ -33,7 +30,7 @@ RUN apt-get update --yes && \
     xclip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install prerequisites
+# install the python prerequisites
 # 1. from requirements.txt for jupyter hub
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/requirements.txt
 # analytics::dataexfiltration analytics::log4shell analytics::piniponmap analytics::sklearn-cluster analytics::attribute-plot analytics::suspiciousscoring 
