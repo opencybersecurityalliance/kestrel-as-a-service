@@ -74,9 +74,9 @@ RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R
 RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git /opt/kaas/kestrel-huntbook
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git /opt/kaas/kestrel-analytics
-RUN ln -s ~/data-bucket-kestrel /opt/kaas/data-bucket-kestrel
-RUN ln -s ~/kestrel-huntbook /opt/kaas/kestrel-huntbook
-RUN ln -s ~/kestrel-analytics /opt/kaas/kestrel-analytics
+RUN ln -s /opt/kaas/data-bucket-kestrel /home/jovyan/data-bucket-kestrel 
+RUN ln -s /opt/kaas/kestrel-huntbook /home/jovyan/kestrel-huntbook 
+RUN ln -s /opt/kaas/kestrel-analytics /home/jovyan/kestrel-analytics 
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
@@ -86,9 +86,11 @@ RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # The config is for the Black Hat Tutorial
 RUN mkdir -p /home/jovyan/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml /home/jovyan/.config/kestrel/
 # this is for the getting started tutorial 5
-RUN cp kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
+RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml /home/jovyan/.config/kestrel/pythonanalytics.yaml
 # this enables trusted ipynb files for jupyter
-RUN jupyter trust /opt/kaas/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/tutorial/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/huntbooks/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/blackhat22/*.ipynb
 ################################
 #
 #
@@ -107,5 +109,4 @@ RUN jupyter trust /opt/kaas/*.ipynb
 #   kestrel-huntbook/blackhat22
 #   kestrel-huntbook/huntbooks
 #
-# ADD: kestrel-huntbook to default folder
 # ADD: slack hunter integration

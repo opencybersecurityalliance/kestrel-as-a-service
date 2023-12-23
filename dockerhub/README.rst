@@ -22,3 +22,7 @@ sudo docker push kpeeples/kaas-baseline:v1
 sudo docker push kpeeples/kaas-baseline:latest
 https://hub.docker.com/repository/docker/kpeeples/kaas-baseline/general
 
+
+docker ps
+docker exec -it <containerid> /bin/bash
+jupyter server list gives the token to sign on
