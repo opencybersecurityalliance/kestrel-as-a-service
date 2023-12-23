@@ -109,5 +109,4 @@ RUN jupyter trust /home/jovyan/kestrel-huntbook/blackhat22/*.ipynb
 #   kestrel-huntbook/blackhat22
 #   kestrel-huntbook/huntbooks
 #
-# ADD: kestrel-huntbook to default folder
 # ADD: slack hunter integration
