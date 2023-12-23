@@ -86,7 +86,7 @@ RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # The config is for the Black Hat Tutorial
 RUN mkdir -p /home/jovyan/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml /home/jovyan/.config/kestrel/
 # this is for the getting started tutorial 5
-RUN cp ~/kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
+RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml ~/.config/kestrel/pythonanalytics.yaml
 # this enables trusted ipynb files for jupyter
 RUN jupyter trust /opt/kaas/*.ipynb
 ################################
