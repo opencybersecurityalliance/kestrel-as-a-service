@@ -43,7 +43,7 @@ singleuser:
     - display_name: "Kestrel Threat Hunting"
       description: "Threat Hunting in Kube"
       kubespawner_override:
-        image: kpeeples/kaas-baseline:latest
+        image: kpeeples/kaas-baseline:v5
 proxy:
   service:
     type: NodePort
