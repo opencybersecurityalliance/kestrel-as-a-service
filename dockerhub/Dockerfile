@@ -50,7 +50,7 @@ RUN sudo apt-get install --yes git-lfs
 RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
 # COPY kaas-logo-san-seriff.png /opt/kaas/kaas-logo-san-seriff.png
 # USER ACTIVITIES
-# Switch back to jovyan to avoid accidental container runs as root
+# Switch back to/${HOME} to avoid accidental container runs as root
 USER ${NB_UID}
 RUN git lfs install
 ################################
@@ -74,9 +74,9 @@ RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R
 RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git /opt/kaas/kestrel-huntbook
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git /opt/kaas/kestrel-analytics
-RUN ln -s /opt/kaas/data-bucket-kestrel /home/jovyan/data-bucket-kestrel 
-RUN ln -s /opt/kaas/kestrel-huntbook /home/jovyan/kestrel-huntbook 
-RUN ln -s /opt/kaas/kestrel-analytics /home/jovyan/kestrel-analytics 
+RUN ln -s /opt/kaas/data-bucket-kestrel ${HOME}/data-bucket-kestrel 
+RUN ln -s /opt/kaas/kestrel-huntbook ${HOME}/kestrel-huntbook 
+RUN ln -s /opt/kaas/kestrel-analytics ${HOME}/kestrel-analytics 
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
@@ -84,13 +84,13 @@ RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # 4. Setup Configurations
 ################################
 # The config is for the Black Hat Tutorial
-RUN mkdir -p /home/jovyan/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml /home/jovyan/.config/kestrel/
+RUN mkdir -p ${HOME}/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml ${HOME}/.config/kestrel/
 # this is for the getting started tutorial 5
-RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml /home/jovyan/.config/kestrel/pythonanalytics.yaml
+RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml ${HOME}/.config/kestrel/pythonanalytics.yaml
 # this enables trusted ipynb files for jupyter
-RUN jupyter trust /home/jovyan/kestrel-huntbook/tutorial/*.ipynb
-RUN jupyter trust /home/jovyan/kestrel-huntbook/huntbooks/*.ipynb
-RUN jupyter trust /home/jovyan/kestrel-huntbook/blackhat22/*.ipynb
+RUN jupyter trust ${HOME}/kestrel-huntbook/tutorial/*.ipynb
+RUN jupyter trust ${HOME}/kestrel-huntbook/huntbooks/*.ipynb
+RUN jupyter trust ${HOME}/kestrel-huntbook/blackhat22/*.ipynb
 ################################
 #
 #
