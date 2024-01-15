@@ -34,7 +34,7 @@ RUN apt-get update --yes && \
 # 1. from requirements.txt for jupyter hub
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/requirements.txt
 # analytics::dataexfiltration analytics::log4shell analytics::piniponmap analytics::sklearn-cluster analytics::attribute-plot analytics::suspiciousscoring 
-RUN pip install kestrel-jupyter flask flask-cors tabulate urllib3 geoip2 folium scikit-learn gower business-rules matplotlib
+RUN pip install kestrel-jupyter flask flask-cors tabulate urllib3 geoip2 folium scikit-learn gower business-rules matplotlib nbgitpuller
 # 2. from apt.txt
 # analytics prereq for cloning data-bucket-kestrel
 # mapped to apt.txt https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/apt.txt
@@ -50,7 +50,7 @@ RUN sudo apt-get install --yes git-lfs
 RUN mkdir -p /opt/kaas && chown ${NB_UID}:${NB_UID} /opt/kaas
 # COPY kaas-logo-san-seriff.png /opt/kaas/kaas-logo-san-seriff.png
 # USER ACTIVITIES
-# Switch back to/${HOME} to avoid accidental container runs as root
+# Switch back to//home/jovyan to avoid accidental container runs as root
 USER ${NB_UID}
 RUN git lfs install
 ################################
@@ -58,12 +58,12 @@ RUN git lfs install
 ################################
 RUN kestrel_jupyter_setup
 ################################
-RUN mv "${HOME}/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyter/kernels/" && \
+RUN mv "/home/jovyan/.local/share/jupyter/kernels/kestrel"* "${CONDA_DIR}/share/jupyter/kernels/" && \
     chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
-    rm -rf "${HOME}/.local"
+    rm -rf "/home/jovyan/.local"
 # Add R mimetype option to specify how the plot returns from R to the browser
-RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o ${HOME}/Rprofile.site
-RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R/etc && mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+RUN curl https://raw.githubusercontent.com/kpeeples/kestrel-as-a-service/main/dockerhub/Rprofile.site -o /home/jovyan/Rprofile.site
+RUN chown ${NB_UID}:${NB_GID} /home/jovyan/Rprofile.site && mkdir -p /opt/conda/lib/R/etc && mv Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
@@ -74,9 +74,9 @@ RUN chown ${NB_UID}:${NB_GID} ${HOME}/Rprofile.site && mkdir -p /opt/conda/lib/R
 RUN git clone https://github.com/opencybersecurityalliance/data-bucket-kestrel.git /opt/kaas/data-bucket-kestrel
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-huntbook.git /opt/kaas/kestrel-huntbook
 RUN git clone https://github.com/opencybersecurityalliance/kestrel-analytics.git /opt/kaas/kestrel-analytics
-RUN ln -s /opt/kaas/data-bucket-kestrel ${HOME}/data-bucket-kestrel 
-RUN ln -s /opt/kaas/kestrel-huntbook ${HOME}/kestrel-huntbook 
-RUN ln -s /opt/kaas/kestrel-analytics ${HOME}/kestrel-analytics 
+RUN ln -s /opt/kaas/data-bucket-kestrel /home/jovyan/data-bucket-kestrel 
+RUN ln -s /opt/kaas/kestrel-huntbook /home/jovyan/kestrel-huntbook 
+RUN ln -s /opt/kaas/kestrel-analytics /home/jovyan/kestrel-analytics 
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
@@ -84,13 +84,13 @@ RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
 # 4. Setup Configurations
 ################################
 # The config is for the Black Hat Tutorial
-RUN mkdir -p ${HOME}/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml ${HOME}/.config/kestrel/
+RUN mkdir -p /home/jovyan/.config/kestrel && mv /opt/kaas/kestrel-huntbook/config/stixshifter.yaml /home/jovyan/.config/kestrel/
 # this is for the getting started tutorial 5
-RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml ${HOME}/.config/kestrel/pythonanalytics.yaml
+RUN cp /opt/kaas/kestrel-analytics/pythonanalytics_sample.yaml /home/jovyan/.config/kestrel/pythonanalytics.yaml
 # this enables trusted ipynb files for jupyter
-RUN jupyter trust ${HOME}/kestrel-huntbook/tutorial/*.ipynb
-RUN jupyter trust ${HOME}/kestrel-huntbook/huntbooks/*.ipynb
-RUN jupyter trust ${HOME}/kestrel-huntbook/blackhat22/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/tutorial/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/huntbooks/*.ipynb
+RUN jupyter trust /home/jovyan/kestrel-huntbook/blackhat22/*.ipynb
 ################################
 #
 #
