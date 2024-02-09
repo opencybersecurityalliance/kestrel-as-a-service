@@ -80,7 +80,7 @@ RUN ln -s /opt/kaas/data-bucket-kestrel /home/jovyan/data-bucket-kestrel
 RUN ln -s /opt/kaas/kestrel-huntbook /home/jovyan/kestrel-huntbook 
 RUN ln -s /opt/kaas/kestrel-analytics /home/jovyan/kestrel-analytics 
 RUN cp /opt/kaas/data-bucket-kestrel/stix-bundles/lab101.json /tmp
-RUN cp /opt/kaas/data-bucket-kestrel/GeoLite2_City.mmdb /opt/kaas/kestrel-analytics/GeoLite2_city.mmdb
+RUN cp /opt/kaas/data-bucket-kestrel/GeoLite2/GeoLite2_City.mmdb /opt/kaas/kestrel-analytics/GeoLite2_City.mmdb
 # from postbuild
 # https://github.com/opencybersecurityalliance/kestrel-huntbook/blob/main/.binder/postBuild
 ################################
