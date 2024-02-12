@@ -4,7 +4,9 @@ At the moment the docker image is getting pushed to - https://hub.docker.com/rep
 
 A single developer can use a Fedora Workstation VM (ie Fedora Workstation 38) and follow these steps to setup the environment to run the docker container for a single test.
 
-Setting up the test environment:
+**Setting up the developer test environment:**
+
+NOTE: KaaS environments include single developer container, shared developer minikube, open source k8s, enterprise supported Openshift AI
 
 1. Install the Fedora Workstation VM (ie Fedora-Workstation-Live-x86_64-38-1.6.iso)
 2. Run sudo dnf update
@@ -20,7 +22,7 @@ Setting up the test environment:
 12. Run sudo systemctl status docker
 13. Run sudo docker run hello-world
 
-Creating the image:
+**Creating the image:**
 
 - Login to dockerhub
 $ docker login
@@ -37,7 +39,7 @@ sudo docker push kpeeples/kaas-baseline:v1
 sudo docker push kpeeples/kaas-baseline:latest
 https://hub.docker.com/repository/docker/kpeeples/kaas-baseline/general
 
-Testing the container:
+**Testing the container:**
 
 1. Run docker run -d -p 8888:8888 kpeeples/kaas-baseline:latest
 2. Run docker ps

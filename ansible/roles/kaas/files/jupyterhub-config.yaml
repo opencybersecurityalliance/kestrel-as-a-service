@@ -30,7 +30,7 @@ singleuser:
   startTimeout: 3600
   extraEnv:
     GRANT_SUDO: "yes"
-    NOTEBOOK_ARGS: "--allow-root --collaborative=true"
+    NOTEBOOK_ARGS: "--allow-root --collaborative=true --notebook-dir=/opt/kaas"
   uid: 0
   cmd: start-singleuser.sh
   image:
