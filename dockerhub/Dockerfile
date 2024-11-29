@@ -64,7 +64,11 @@ RUN pip install \
 # 1. Setup Git LFS - to setup gitlab-lfs for this container it has to be grabbed from the site as git-lfs is not in the repo for the base
 ################################
 # analytics prereq
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
+ARG GIT_LFS_SETUP_SCRIPT_SHA=8c4d07257b8fb6d612b6085f68ad33c34567b00d0e4b29ed784b2a85380f727b
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -o /tmp/script.deb.sh \
+ && echo "${GIT_LFS_SETUP_SCRIPT_SHA}  /tmp/script.deb.sh" | sha256sum -c - \
+ && sudo bash /tmp/script.deb.sh \
+ && rm /tmp/script.deb.sh \
  && sudo apt-get install --yes git-lfs
 
 RUN mkdir -p /opt/kaas \
