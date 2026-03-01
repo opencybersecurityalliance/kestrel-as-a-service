@@ -1,0 +1,13 @@
+#!/bin/sh
+CONTAINER_FIRST_STARTUP="setup-run-file.txt"
+if [ ! -e /opt/app-root/$CONTAINER_FIRST_STARTUP ]; then
+    touch /opt/app-root/$CONTAINER_FIRST_STARTUP
+    kestrel_jupyter_setup
+    ln -s /opt/app-root/data-bucket-kestrel /opt/app-root/src/data-bucket-kestrel 
+    ln -s /opt/app-root/kestrel-huntbook /opt/app-root/src/kestrel-huntbook 
+    ln -s /opt/app-root/kestrel-analytics /opt/app-root/src/kestrel-analytics 
+    cp /opt/app-root/data-bucket-kestrel/stix-bundles/lab101.json /tmp
+    cp /opt/app-root/data-bucket-kestrel/GeoLite2/GeoLite2-City.mmdb /opt/app-root/src/kestrel-analytics/analytics/piniponmap/GeoLite2-City.mmdb
+    mkdir -p /opt/app-root/src/.config/kestrel && mv /opt/app-root/kestrel-huntbook/config/stixshifter.yaml /opt/app-root/src/.config/kestrel/
+    cp /opt/app-root/kestrel-analytics/pythonanalytics_sample.yaml /opt/app-root/src/.config/kestrel/pythonanalytics.yaml
+fi
